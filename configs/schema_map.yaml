@@ -1,0 +1,328 @@
+# =============================================================================
+# CONTRAT DE DONNEES RECONSTRUIT EMPIRIQUEMENT -- CRITIQUE, LIRE AVANT TOUT
+# =============================================================================
+#
+# Version 2 -- reconstruite sur l'INTEGRALITE du fichier (1 627 757 lignes),
+# pas seulement un echantillon. La version 1 de ce fichier s'appuyait sur les
+# 100 000 premieres lignes (chronologiquement les plus anciennes, mi-2022) et
+# s'est averee NON REPRESENTATIVE pour plusieurs colonnes : leur taux de
+# remplissage a fortement varie dans le temps (adoption progressive de
+# certains champs par le systeme source). Le mapping ci-dessous corrige ces
+# erreurs. Voir outputs/reports/schema_audit_report.json pour le detail brut.
+#
+# Le dictionnaire de donnees du cahier des charges (Defi BAMIS ESP 2026.docx)
+# annonce 23 colonnes. Le fichier reel contient un socle de 26 champs
+# TOUJOURS presents (positions 0 a 25), plus 0 a 4 champs supplementaires
+# quasi-integralement vides (positions 26 a 29) sur une partie des lignes.
+#
+# CAUSE DU DECALAGE (positions 0-25 vs les 23 colonnes declarees) :
+# les 3 colonnes de date (TRANSACTION_DATE, REQUEST_DATE, RESPONSE_DATE)
+# exportent une fraction sub-seconde apres une VIRGULE non protegee par des
+# guillemets, ex. "12/06/22 15:05:44,421000000" qui signifie 15:05:44 +
+# 421 000 000 ns (421 ms). Un parseur CSV naif (y compris pandas.read_csv
+# par defaut) lit cette virgule comme un SEPARATEUR DE COLONNE et decale
+# silencieusement toutes les colonnes suivantes.
+#
+# CAUSE DES CHAMPS 26-29 (bimodal ~26 vs ~28 champs sur le fichier complet,
+# 804 409 vs 796 995 lignes) : CE NE SONT PAS deux schemas differents. Ce
+# sont des virgules de fin de ligne surnumeraires, quasi-integralement vides
+# (colonnes 26 et 27 vides a 99.8% et 99.9996% quand presentes). Un artefact
+# d'export (versions differentes du job d'export au fil du temps), sans
+# signal metier. Le loader peut les ignorer sans perte d'information.
+#
+# =============================================================================
+
+n_declared_columns: 23
+n_core_fields: 26              # positions 0-25, presentes sur 100% des 1 627 757 lignes
+n_observed_fields_range: [26, 30]
+audit_scope: "fichier complet (1 627 757 lignes), voir outputs/reports/schema_audit_report.json"
+
+date_range_observed:
+  min: "2003-06-05"   # ANOMALIE -- 63 lignes seulement, tres probablement une erreur de date source (annee "03" mal interpretee ou valeur par defaut). A METTRE EN QUARANTAINE par ingestion/validators.py, ne pas les laisser polluer les fenetres glissantes.
+  max: "2026-07-15"   # a 3 jours de la date du jour -- le flux de donnees est essentiellement a jour
+  rows_per_year:
+    2003: 63     # anomalie, cf. ci-dessus
+    2022: 36752  # a partir de mars 2022 seulement
+    2023: 102277
+    2024: 294973
+    2025: 716625
+    2026: 477067 # partiel, jusqu'a mi-juillet -> rythme annualise ~950k, en forte croissance
+  implication: >
+    Pres de 75% du volume total est concentre sur 2025-2026. Le split de
+    validation temporelle (ARCHITECTURE.md section 6) doit etre concu sur
+    cette base : replis glissants dans la periode 2024-2026, la periode
+    2022-2023 (faible volume, comportements possiblement non representatifs
+    du systeme actuel) peut servir de "warm-up" pour les features historiques
+    plutot que de fenetre de validation en soi.
+
+no_fraud_label_found: true
+no_fraud_label_note: >
+  Aucune colonne de ce fichier ne ressemble a un label de fraude (binaire,
+  prevalence ~1%). Le seul candidat binaire trouve (position 27) n'a que 3
+  lignes a '1' sur 1 627 757 -- du bruit, pas un signal. Ce fichier est tres
+  probablement un DUMP BRUT NON ETIQUETE.
+
+decision_2026_07_19_pas_de_labels_a_attendre: >
+  DECISION D'EQUIPE, confirmee par une relecture du cahier des charges :
+  "Le jury comparera vos notes a la verite qu'il garde de cote" (section 4,
+  volet A) indique explicitement que le jury NE FOURNIT JAMAIS le fichier de
+  verite -- ni pour l'entrainement, ni pour le test. Ce n'est pas une piece
+  manquante en attente de reception, c'est structurel a la competition.
+  Consequence sur la strategie ML (section 4 du cahier des charges,
+  "Niveau 2 : machine learning entraine sur les exemples etiquetes") :
+  les "exemples etiquetes" ne peuvent venir que de nous-memes. Strategie
+  retenue -- APPRENTISSAGE FAIBLEMENT SUPERVISE : rules/business_rules.py
+  (niveau 1 : F-01 a F-06, C-01 a C-10) genere un score de suspicion par
+  regle explicite ; ce score sert de PSEUDO-LABEL d'entrainement pour le
+  modele ML (niveau 2), qui apprend a generaliser au-dela des regles
+  strictes (capter les cas limites que les regles manquent, lisser les faux
+  positifs evidents des regles). Le graphe (niveau 3) vient ensuite enrichir
+  les deux. Voir ARCHITECTURE.md section 0 et modeling/train.py.
+  seuils_services.csv suit la meme logique : le tableau du cahier des
+  charges FAIT FOI (voir configs/thresholds/README_SEUILS.md), ce n'est pas
+  un placeholder en attente d'un fichier separe.
+
+# position = index de colonne (0-based) tel que lu par un simple split sur virgule
+columns:
+  0:
+    name: TRANSACTION_CODE
+    dtype: int64
+    confidence: high
+    note: identifiant unique, 100% rempli, entier croissant
+  1:
+    name: SERVICE_CODE
+    dtype: category
+    confidence: high
+    note: motif SERVICE_01 a SERVICE_12, 100% rempli
+  2:
+    name: TRANSACTION_STATUS
+    dtype: category
+    confidence: high
+    note: >
+      100% rempli. Valeurs observees sur le fichier complet : VALIDATED
+      (majoritaire), REJECTED, INCOMPLETE, REGISTERED (et quelques autres
+      rares). Confirme qu'il existe bien des statuts non-VALIDATED, a
+      inclure dans le nettoyage (decider si REJECTED/INCOMPLETE doivent
+      etre exclus des features d'historique client ou traites a part).
+  3:
+    name: TRANSACTION_DATE__date_part
+    dtype: string
+    confidence: high
+    note: partie JJ/MM/AA HH:MM:SS -- a fusionner avec la position 4 (fraction sub-seconde)
+  4:
+    name: TRANSACTION_DATE__fraction_ns
+    dtype: int64
+    confidence: high
+    note: fraction sub-seconde en nanosecondes, ex 421000000 = 421 ms. A fusionner avec la position 3.
+  5:
+    name: TRANSACTION_AMOUNT
+    dtype: float64
+    confidence: high
+    note: montant reel en MRU (valeurs coherentes avec des montants mobile money). 100% rempli.
+  6:
+    name: REQUEST_REFERENCE
+    dtype: string
+    confidence: medium
+    note: >
+      61.5% rempli sur le fichier complet (pas "tres majoritairement vide"
+      comme suggere par l'echantillon initial -- CORRECTION). Petits entiers
+      (1-2 chiffres) quand present. A confirmer.
+  7:
+    name: REQUEST_DATE__date_part
+    dtype: string
+    confidence: high
+    note: 99.75% rempli
+  8:
+    name: REQUEST_DATE__fraction_ns
+    dtype: int64
+    confidence: high
+  9:
+    name: RESPONSE_DATE__date_part
+    dtype: string
+    confidence: high
+  10:
+    name: RESPONSE_DATE__fraction_ns
+    dtype: int64
+    confidence: high
+    note: utile pour REQUEST_RESPONSE_LATENCY_MS, signal d'automatisation mentionne dans le cahier des charges
+  11:
+    name: SOURCE_PHONE
+    dtype: string
+    confidence: high
+    note: motif TEL######, 100% rempli
+  12:
+    name: DESTINATION_PHONE
+    dtype: string
+    confidence: high
+    note: motif TEL######, 95.7% rempli sur le fichier complet
+  13:
+    name: TRANSACTION_FEES
+    dtype: float64
+    confidence: medium
+    note: 79.4% rempli, petites valeurs numeriques (0, 10, 100...), coherent avec des frais en MRU
+  14:
+    name: DESTINATION_TYPE
+    dtype: category
+    confidence: low
+    note: >
+      12.2% rempli sur le fichier complet. Valeurs : petits entiers (2,4,5,6)
+      et 'C'. Cardinalite faible, coherent avec un code de type de
+      destination. Signification exacte non confirmee.
+  15:
+    name: SOURCE_CUSTOMER_or_DESTINATION_CUSTOMER_candidate
+    dtype: string
+    confidence: low
+    note: >
+      TRES sparse (1.1% rempli) -- valeurs 'C' ou nombres a 12 chiffres.
+      CANDIDAT LE PLUS PLAUSIBLE pour DESTINATION_CUSTOMER (le cahier des
+      charges implique que la majorite des transactions sont internes, donc
+      DESTINATION_CUSTOMER devrait etre rempli seulement pour une MINORITE
+      de lignes -- 1.1% est un taux de remplissage bien plus coherent avec
+      "transaction externe via GIMTEL, minoritaire" que les positions 16-18
+      (55-62% rempli, beaucoup trop eleve pour representer une minorite
+      GIMTEL). A CONFIRMER EN PRIORITE : c'est la colonne pivot pour la
+      distinction interne/externe (features 5.8 du plan).
+  16:
+    name: BATCH_ID_or_reconciliation_reference
+    dtype: string
+    confidence: medium
+    note: >
+      55.2% rempli, mais RECLASSIFIE apres audit complet -- CE N'EST PAS UN
+      IDENTIFIANT CLIENT. Cardinalite tres faible (2095 valeurs distinctes
+      pour 1.6M lignes, ~800 lignes/valeur en moyenne) et taux de
+      remplissage qui suit une courbe d'ADOPTION PROGRESSIVE nette (2022:
+      150 lignes, 2023: 938, 2024: 87813, 2025: 478746, 2026: 331178) --
+      signature typique d'un processus de rapprochement/lot deploye
+      progressivement, pas d'un identifiant client (qui serait present des
+      le debut et a cardinalite bien plus elevee). Co-occurre fortement avec
+      la position 17 (rempli ensemble 55% du temps). Meilleur candidat :
+      BATCH_ID.
+  17:
+    name: ACCOUNTING_reference_or_second_batch_field
+    dtype: string
+    confidence: low
+    note: >
+      61.9% rempli, memes caracteristiques que la position 16 (cardinalite
+      tres faible : 348 valeurs distinctes, courbe d'adoption progressive
+      identique 2022->2026, quasi-toujours rempli EN MEME TEMPS que la
+      position 16). Probablement un second champ du meme processus de
+      rapprochement (ex. ACCOUNTING_REQUEST_DATE/RESPONSE_DATE ou une
+      reference de reglement liee). PAS un identifiant client -- CORRECTION
+      par rapport a l'hypothese initiale.
+  18:
+    name: PARTNER_REFERENCE
+    dtype: category
+    confidence: high
+    note: >
+      61.3% rempli. RECLASSIFIE apres audit complet (ETAIT mappe a
+      DESTINATION_CUSTOMER par erreur sur l'echantillon initial -- CORRECTION
+      IMPORTANTE). Valeurs = codes d'institution a faible cardinalite (19
+      valeurs distinctes, motif INS0000##, ex. INS000012 = 559073
+      occurrences, INS000015 = 322907, ...). Correspond exactement a la
+      description du cahier des charges pour PARTNER_REFERENCE :
+      "Reference liee au partenaire ou au facturier (NE DETERMINE PAS
+      l'interne/externe)" -- donc a NE PAS utiliser comme flag GIMTEL,
+      contrairement a ce qui avait ete suppose initialement.
+  19:
+    name: TRANSACTION_DIRECTION
+    dtype: category
+    confidence: high
+    note: >
+      61.2% rempli. RECLASSIFIE (ETAIT mappe a un champ incertain --
+      CORRECTION). Valeurs dominantes : OUTBOUND (673875), INBOUND
+      (320817), plus une contamination marginale de codes INS0000##
+      (bleed-through des lignes a nombre de champs atypique, negligeable).
+      Correspond a TRANSACTION_DIRECTION ("sens de l'operation : entree ou
+      sortie").
+  20:
+    name: QR_INDICATOR
+    dtype: category
+    confidence: medium
+    note: >
+      84.6% rempli. RECLASSIFIE (ETAIT mappe a tort a TRANSACTION_DIRECTION
+      sur la base de l'echantillon initial -- CORRECTION). Valeurs
+      dominantes : 'U' (1 329 637, tres majoritaire), 'N' (35498), 'Y'
+      (9012) -- motif tri-state Yes/No/Unknown coherent avec un indicateur
+      booleen "paiement par QR Code ?" ou 'U' = valeur par defaut/non
+      determinee. A confirmer, mais bien plus plausible que l'hypothese
+      initiale.
+  21:
+    name: SETTLEMENT_STATUS_candidate
+    dtype: category
+    confidence: low
+    note: >
+      50.0% rempli. Valeurs majoritaires 'U'/'N' (tres proches en motif de
+      la position 20), avec une contamination marginale de dates completes
+      (bleed-through des lignes a nombre de champs atypique -- ignorer ces
+      valeurs aberrantes). Candidat pour SETTLEMENT_STATUS ou un second
+      indicateur tri-state. A confirmer.
+  22:
+    name: unclear_position_22
+    dtype: string
+    confidence: low
+    note: >
+      49.0% rempli, melange de types (INT dominant sur le fichier complet,
+      quelques dates) -- probablement lie au meme processus que la position
+      21/23 (bloc de colonnes co-remplies ensemble ~49-50% du temps).
+      Signification non determinee, impact limite sur les features (pas une
+      colonne prioritaire du cahier des charges).
+  23:
+    name: unclear_position_23
+    dtype: string
+    confidence: low
+    note: >
+      98.4% rempli (bien plus que suggere par l'echantillon initial --
+      CORRECTION), valeur '0' tres dominante mais aussi ~49% de valeurs de
+      type DATE observees sur le fichier complet. Colonne composite/mal
+      comprise, a re-analyser si le temps le permet. Priorite basse (aucune
+      des colonnes prioritaires listees par le cahier des charges ne
+      correspond a ce profil).
+  24:
+    name: CHANNEL_TYPE_candidate
+    dtype: category
+    confidence: low
+    note: >
+      53.9% rempli (CORRECTION -- l'echantillon initial suggerait ~4%,
+      totalement faux). Melange INT/DATE/OTHER, profil pas clairement
+      celui d'un canal (APP/USSD/AGENT/WHATSAPP attendu). A revalider en
+      priorite : c'est une colonne CLE pour C-08 (changement de canal) et
+      le score de valeur (diversite). Si aucune colonne ne correspond
+      clairement a un canal explicite, envisager de deriver un proxy de
+      canal a partir d'autres signaux (ex. presence/absence de certains
+      champs) ou de demander clarification aux organisateurs.
+  25:
+    name: unclear_position_25
+    dtype: string
+    confidence: low
+    note: 49.2% rempli (CORRECTION -- l'echantillon initial suggerait <1%). Valeur '0' dominante. Signification non determinee.
+
+# Colonnes 26-29 : quasi-integralement vides (99.8%+ quand presentes),
+# artefact d'export sans signal metier. ingestion/loader.py doit simplement
+# les ignorer (ne pas planter si elles sont absentes ou presentes).
+overflow_columns_26_to_29:
+  note: "Vides a 99.8%+ -- aucune information exploitee. Voir cause dans l'entete du fichier."
+
+action_items_avant_feature_engineering:
+  - "PRIORITE 1 -- Confirmer la colonne interne/externe GIMTEL (candidat :
+     position 15, 1.1% rempli -- BEAUCOUP plus coherent avec une minorite
+     de transactions externes que les positions 16-18 qui sont a 55-62%).
+     C'est une colonne pivot pour les features 5.8 (GIMTEL) et pour le
+     critere C-09 du barème."
+  - "PRIORITE 1 -- Mettre en quarantaine les 63 lignes datees de 2003 (voir
+     date_range_observed) dans ingestion/validators.py avant tout calcul de
+     fenetre glissante -- une seule ligne mal datee peut fausser tout
+     l'historique 'ancien' d'un client si elle se glisse dans une fenetre
+     expanding."
+  - "PRIORITE 2 -- Revalider CHANNEL_TYPE (position 24) : le profil observe
+     ne correspond pas clairement a des valeurs de canal attendues
+     (APP/USSD/AGENT/WHATSAPP). Sans cette colonne fiable, C-08
+     (changement de canal) ne peut pas etre detecte correctement."
+  - "PRIORITE 2 -- Confirmer aupres des organisateurs : le vrai
+     seuils_services.csv (toujours pas recu), et surtout -- ce fichier ne
+     contient AUCUNE colonne cible de fraude exploitable en l'etat (voir
+     no_fraud_label_found ci-dessus). Demander confirmation sur comment/
+     quand les labels et/ou le jeu de test seront fournis."
+  - "PRIORITE 3 -- Re-analyser les positions 21, 22, 23, 25 (co-remplies
+     ~49-50% du temps, signification non determinee) si le temps le permet
+     -- impact limite sur les criteres du barème en l'etat des
+     connaissances actuelles."

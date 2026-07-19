@@ -1,0 +1,53 @@
+data/raw/*
+!data/raw/.gitkeep
+data/interim/*
+!data/interim/.gitkeep
+data/processed/*
+!data/processed/.gitkeep
+data/features/*
+!data/features/.gitkeep
+data/graph/*
+!data/graph/.gitkeep
+
+# le modele entraine est petit (<1 Mo) -- garde comme preuve tangible du
+# resultat, contrairement aux donnees intermediaires (regenerable via
+# scripts/run_all.py, jamais versionnees)
+models/*
+!models/.gitkeep
+!models/catboost_v1.cbm
+
+# outputs/submissions/*.csv jamais versionnes : classement_clients.csv
+# fait a lui seul 147 Mo, au-dessus de la limite dure de 100 Mo de GitHub --
+# le push echouerait. Regenerable via scripts/run_all.py.
+outputs/submissions/*
+
+# outputs/reports/ : on garde les petits fichiers de preuve
+# (metriques, logs), jamais les CSV volumineux
+outputs/reports/*.csv
+!outputs/reports/.gitkeep
+
+outputs/dashboard_exports/*
+!outputs/dashboard_exports/.gitkeep
+!outputs/dashboard_exports/dashboard.html
+
+# partage interne equipe, jamais un livrable
+outputs/partage_equipe/
+
+# archive de soumission (contient les CSV ci-dessus, deja exclue) -- pas du
+# code source, ne doit jamais etre versionnee
+Nextdata.zip
+Nextdata/
+
+# logs internes de CatBoost (plots d'entrainement), pas necessaires au repo
+catboost_info/
+
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+
+scaffold_tmp/
+_docx_extract.txt

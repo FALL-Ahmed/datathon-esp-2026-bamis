@@ -1,0 +1,672 @@
+{
+  "source_file": "data\\raw\\DATASET_ESP-2026.csv",
+  "field_count_report": {
+    "n_rows_scanned": 1627757,
+    "field_count_distribution": {
+      "26": 804409,
+      "27": 24677,
+      "28": 796995,
+      "29": 1673,
+      "30": 3
+    },
+    "n_declared_header_columns": 23
+  },
+  "column_profiles": {
+    "0": {
+      "position": 0,
+      "n_seen": 1627757,
+      "n_nonempty": 1627757,
+      "pct_nonempty": 100.0,
+      "type_counts": {
+        "INT": 1627757
+      },
+      "sample_values": [
+        "2360",
+        "2361",
+        "2362",
+        "2363",
+        "2364",
+        "2365"
+      ],
+      "n_distinct_nonempty": "capped(>5000)",
+      "distinct_values_if_low_cardinality": null
+    },
+    "1": {
+      "position": 1,
+      "n_seen": 1627757,
+      "n_nonempty": 1627757,
+      "pct_nonempty": 100.0,
+      "type_counts": {
+        "SERVICE": 1627757
+      },
+      "sample_values": [
+        "SERVICE_06",
+        "SERVICE_06",
+        "SERVICE_08",
+        "SERVICE_06",
+        "SERVICE_06",
+        "SERVICE_06"
+      ],
+      "n_distinct_nonempty": 12,
+      "distinct_values_if_low_cardinality": [
+        "SERVICE_01",
+        "SERVICE_02",
+        "SERVICE_03",
+        "SERVICE_04",
+        "SERVICE_05",
+        "SERVICE_06",
+        "SERVICE_07",
+        "SERVICE_08",
+        "SERVICE_09",
+        "SERVICE_10",
+        "SERVICE_11",
+        "SERVICE_12"
+      ]
+    },
+    "2": {
+      "position": 2,
+      "n_seen": 1627757,
+      "n_nonempty": 1627757,
+      "pct_nonempty": 100.0,
+      "type_counts": {
+        "OTHER": 1627757
+      },
+      "sample_values": [
+        "VALIDATED",
+        "VALIDATED",
+        "VALIDATED",
+        "VALIDATED",
+        "VALIDATED",
+        "VALIDATED"
+      ],
+      "n_distinct_nonempty": 5,
+      "distinct_values_if_low_cardinality": [
+        "EXPIRED",
+        "INCOMPLETE",
+        "REGISTERED",
+        "REJECTED",
+        "VALIDATED"
+      ]
+    },
+    "3": {
+      "position": 3,
+      "n_seen": 1627757,
+      "n_nonempty": 1627757,
+      "pct_nonempty": 100.0,
+      "type_counts": {
+        "DATE": 1627757
+      },
+      "sample_values": [
+        "12/06/22 15:05:44",
+        "12/06/22 16:00:02",
+        "12/06/22 18:52:41",
+        "12/06/22 22:31:09",
+        "12/06/22 22:43:27",
+        "13/06/22 00:19:48"
+      ],
+      "n_distinct_nonempty": "capped(>5000)",
+      "distinct_values_if_low_cardinality": null
+    },
+    "4": {
+      "position": 4,
+      "n_seen": 1627757,
+      "n_nonempty": 1627757,
+      "pct_nonempty": 100.0,
+      "type_counts": {
+        "INT": 1627757
+      },
+      "sample_values": [
+        "421000000",
+        "395000000",
+        "884000000",
+        "050000000",
+        "930000000",
+        "547000000"
+      ],
+      "n_distinct_nonempty": 1000,
+      "distinct_values_if_low_cardinality": null
+    },
+    "5": {
+      "position": 5,
+      "n_seen": 1627757,
+      "n_nonempty": 1627757,
+      "pct_nonempty": 100.0,
+      "type_counts": {
+        "INT": 1627757
+      },
+      "sample_values": [
+        "50",
+        "200",
+        "10000",
+        "200",
+        "200",
+        "50"
+      ],
+      "n_distinct_nonempty": "capped(>5000)",
+      "distinct_values_if_low_cardinality": null
+    },
+    "6": {
+      "position": 6,
+      "n_seen": 1627757,
+      "n_nonempty": 1001303,
+      "pct_nonempty": 61.5143,
+      "type_counts": {
+        "EMPTY": 626454,
+        "INT": 1001303
+      },
+      "sample_values": [
+        "5",
+        "5",
+        "2",
+        "4",
+        "5",
+        "2"
+      ],
+      "n_distinct_nonempty": "capped(>5000)",
+      "distinct_values_if_low_cardinality": null
+    },
+    "7": {
+      "position": 7,
+      "n_seen": 1627757,
+      "n_nonempty": 1623680,
+      "pct_nonempty": 99.7495,
+      "type_counts": {
+        "DATE": 1622554,
+        "EMPTY": 4077,
+        "INT": 1126
+      },
+      "sample_values": [
+        "12/06/22 15:05:44",
+        "12/06/22 16:00:02",
+        "12/06/22 18:52:41",
+        "12/06/22 22:31:09",
+        "12/06/22 22:43:27",
+        "13/06/22 00:19:48"
+      ],
+      "n_distinct_nonempty": "capped(>5000)",
+      "distinct_values_if_low_cardinality": null
+    },
+    "8": {
+      "position": 8,
+      "n_seen": 1627757,
+      "n_nonempty": 1627757,
+      "pct_nonempty": 100.0,
+      "type_counts": {
+        "INT": 1622554,
+        "DATE": 5203
+      },
+      "sample_values": [
+        "421000000",
+        "395000000",
+        "884000000",
+        "050000000",
+        "930000000",
+        "547000000"
+      ],
+      "n_distinct_nonempty": "capped(>5000)",
+      "distinct_values_if_low_cardinality": null
+    },
+    "9": {
+      "position": 9,
+      "n_seen": 1627757,
+      "n_nonempty": 1627757,
+      "pct_nonempty": 100.0,
+      "type_counts": {
+        "DATE": 1622554,
+        "INT": 5203
+      },
+      "sample_values": [
+        "12/06/22 15:05:44",
+        "12/06/22 16:00:02",
+        "12/06/22 18:52:41",
+        "12/06/22 22:31:09",
+        "12/06/22 22:43:28",
+        "13/06/22 00:19:48"
+      ],
+      "n_distinct_nonempty": "capped(>5000)",
+      "distinct_values_if_low_cardinality": null
+    },
+    "10": {
+      "position": 10,
+      "n_seen": 1627757,
+      "n_nonempty": 1627757,
+      "pct_nonempty": 100.0,
+      "type_counts": {
+        "INT": 1622554,
+        "DATE": 5203
+      },
+      "sample_values": [
+        "501000000",
+        "475000000",
+        "964000000",
+        "130000000",
+        "011000000",
+        "629000000"
+      ],
+      "n_distinct_nonempty": "capped(>5000)",
+      "distinct_values_if_low_cardinality": null
+    },
+    "11": {
+      "position": 11,
+      "n_seen": 1627757,
+      "n_nonempty": 1627757,
+      "pct_nonempty": 100.0,
+      "type_counts": {
+        "TEL": 1622554,
+        "INT": 5203
+      },
+      "sample_values": [
+        "TEL021297",
+        "TEL023599",
+        "TEL070468",
+        "TEL106356",
+        "TEL106356",
+        "TEL082005"
+      ],
+      "n_distinct_nonempty": "capped(>5000)",
+      "distinct_values_if_low_cardinality": null
+    },
+    "12": {
+      "position": 12,
+      "n_seen": 1627757,
+      "n_nonempty": 1557394,
+      "pct_nonempty": 95.6773,
+      "type_counts": {
+        "TEL": 1557394,
+        "EMPTY": 70363
+      },
+      "sample_values": [
+        "TEL021297",
+        "TEL070804",
+        "TEL025042",
+        "TEL106356",
+        "TEL076284",
+        "TEL170493"
+      ],
+      "n_distinct_nonempty": "capped(>5000)",
+      "distinct_values_if_low_cardinality": null
+    },
+    "13": {
+      "position": 13,
+      "n_seen": 1627757,
+      "n_nonempty": 1292781,
+      "pct_nonempty": 79.421,
+      "type_counts": {
+        "INT": 1291232,
+        "TEL": 1549,
+        "EMPTY": 334976
+      },
+      "sample_values": [
+        "0",
+        "0",
+        "100",
+        "0",
+        "0",
+        "0"
+      ],
+      "n_distinct_nonempty": 1289,
+      "distinct_values_if_low_cardinality": null
+    },
+    "14": {
+      "position": 14,
+      "n_seen": 1627757,
+      "n_nonempty": 198070,
+      "pct_nonempty": 12.1683,
+      "type_counts": {
+        "EMPTY": 1429687,
+        "INT": 27153,
+        "OTHER": 170917
+      },
+      "sample_values": [
+        "6",
+        "C",
+        "5",
+        "5",
+        "C",
+        "5"
+      ],
+      "n_distinct_nonempty": 241,
+      "distinct_values_if_low_cardinality": null
+    },
+    "15": {
+      "position": 15,
+      "n_seen": 1627757,
+      "n_nonempty": 18060,
+      "pct_nonempty": 1.1095,
+      "type_counts": {
+        "EMPTY": 1609697,
+        "OTHER": 5401,
+        "INT": 12659
+      },
+      "sample_values": [
+        "C",
+        "463014901288",
+        "411104502680",
+        "404100101119",
+        "C",
+        "463014901288"
+      ],
+      "n_distinct_nonempty": "capped(>5000)",
+      "distinct_values_if_low_cardinality": null
+    },
+    "16": {
+      "position": 16,
+      "n_seen": 1627757,
+      "n_nonempty": 898826,
+      "pct_nonempty": 55.2187,
+      "type_counts": {
+        "EMPTY": 728931,
+        "INT": 898323,
+        "OTHER": 503
+      },
+      "sample_values": [
+        "463014901288",
+        "464208601789",
+        "411104502680",
+        "464208601789",
+        "463014901288",
+        "463014901288"
+      ],
+      "n_distinct_nonempty": 2095,
+      "distinct_values_if_low_cardinality": null
+    },
+    "17": {
+      "position": 17,
+      "n_seen": 1627757,
+      "n_nonempty": 1008268,
+      "pct_nonempty": 61.9422,
+      "type_counts": {
+        "EMPTY": 619489,
+        "INT": 1944,
+        "OTHER": 1006324
+      },
+      "sample_values": [
+        "411104502680",
+        "105234101670",
+        "163104050699",
+        "163104011170",
+        "468821003107",
+        "414857304254"
+      ],
+      "n_distinct_nonempty": 348,
+      "distinct_values_if_low_cardinality": null
+    },
+    "18": {
+      "position": 18,
+      "n_seen": 1627757,
+      "n_nonempty": 997142,
+      "pct_nonempty": 61.2587,
+      "type_counts": {
+        "EMPTY": 630615,
+        "OTHER": 997139,
+        "INT": 3
+      },
+      "sample_values": [
+        "INS000015",
+        "INS000015",
+        "INS000015",
+        "INS000015",
+        "INS000007",
+        "INS000015"
+      ],
+      "n_distinct_nonempty": 22,
+      "distinct_values_if_low_cardinality": null
+    },
+    "19": {
+      "position": 19,
+      "n_seen": 1627757,
+      "n_nonempty": 996902,
+      "pct_nonempty": 61.2439,
+      "type_counts": {
+        "EMPTY": 630855,
+        "OTHER": 996902
+      },
+      "sample_values": [
+        "INS000007",
+        "INS000007",
+        "INS000007",
+        "INS000007",
+        "OUTBOUND",
+        "INS000007"
+      ],
+      "n_distinct_nonempty": 15,
+      "distinct_values_if_low_cardinality": [
+        "INBOUND",
+        "INS000002",
+        "INS000003",
+        "INS000005",
+        "INS000007",
+        "INS000008",
+        "INS000010",
+        "INS000012",
+        "INS000013",
+        "INS000014",
+        "INS000015",
+        "INS000016",
+        "INS000017",
+        "INS000019",
+        "OUTBOUND"
+      ]
+    },
+    "20": {
+      "position": 20,
+      "n_seen": 1627757,
+      "n_nonempty": 1376357,
+      "pct_nonempty": 84.5554,
+      "type_counts": {
+        "EMPTY": 251400,
+        "OTHER": 1376357
+      },
+      "sample_values": [
+        "OUTBOUND",
+        "OUTBOUND",
+        "OUTBOUND",
+        "OUTBOUND",
+        "OUTBOUND",
+        "OUTBOUND"
+      ],
+      "n_distinct_nonempty": 6,
+      "distinct_values_if_low_cardinality": [
+        "INBOUND",
+        "INS000012",
+        "N",
+        "OUTBOUND",
+        "U",
+        "Y"
+      ]
+    },
+    "21": {
+      "position": 21,
+      "n_seen": 1627757,
+      "n_nonempty": 814269,
+      "pct_nonempty": 50.024,
+      "type_counts": {
+        "EMPTY": 813488,
+        "OTHER": 18196,
+        "DATE": 796073
+      },
+      "sample_values": [
+        "U",
+        "N",
+        "U",
+        "U",
+        "U",
+        "U"
+      ],
+      "n_distinct_nonempty": "capped(>5000)",
+      "distinct_values_if_low_cardinality": null
+    },
+    "22": {
+      "position": 22,
+      "n_seen": 1627757,
+      "n_nonempty": 798242,
+      "pct_nonempty": 49.0394,
+      "type_counts": {
+        "EMPTY": 829515,
+        "OTHER": 496,
+        "INT": 796073,
+        "DATE": 1673
+      },
+      "sample_values": [
+        "U",
+        "U",
+        "U",
+        "U",
+        "U",
+        "U"
+      ],
+      "n_distinct_nonempty": 2674,
+      "distinct_values_if_low_cardinality": null
+    },
+    "23": {
+      "position": 23,
+      "n_seen": 1627757,
+      "n_nonempty": 1602158,
+      "pct_nonempty": 98.4273,
+      "type_counts": {
+        "INT": 806082,
+        "EMPTY": 25599,
+        "DATE": 796076
+      },
+      "sample_values": [
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "n_distinct_nonempty": "capped(>5000)",
+      "distinct_values_if_low_cardinality": null
+    },
+    "24": {
+      "position": 24,
+      "n_seen": 1627757,
+      "n_nonempty": 877722,
+      "pct_nonempty": 53.9222,
+      "type_counts": {
+        "EMPTY": 750035,
+        "INT": 820753,
+        "DATE": 1673,
+        "OTHER": 55296
+      },
+      "sample_values": [
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "n_distinct_nonempty": 2676,
+      "distinct_values_if_low_cardinality": null
+    },
+    "25": {
+      "position": 25,
+      "n_seen": 1627757,
+      "n_nonempty": 801362,
+      "pct_nonempty": 49.2311,
+      "type_counts": {
+        "EMPTY": 826395,
+        "INT": 798703,
+        "DATE": 3,
+        "OTHER": 2656
+      },
+      "sample_values": [
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "n_distinct_nonempty": 820,
+      "distinct_values_if_low_cardinality": null
+    },
+    "26": {
+      "position": 26,
+      "n_seen": 823348,
+      "n_nonempty": 1729,
+      "pct_nonempty": 0.21,
+      "type_counts": {
+        "EMPTY": 821619,
+        "INT": 1676,
+        "OTHER": 53
+      },
+      "sample_values": [
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "n_distinct_nonempty": 7,
+      "distinct_values_if_low_cardinality": [
+        "0",
+        "1",
+        "387000000",
+        "709000000",
+        "771000000",
+        "A",
+        "C"
+      ]
+    },
+    "27": {
+      "position": 27,
+      "n_seen": 798671,
+      "n_nonempty": 3,
+      "pct_nonempty": 0.0004,
+      "type_counts": {
+        "EMPTY": 798668,
+        "INT": 3
+      },
+      "sample_values": [
+        "1",
+        "1",
+        "1"
+      ],
+      "n_distinct_nonempty": 1,
+      "distinct_values_if_low_cardinality": [
+        "1"
+      ]
+    },
+    "28": {
+      "position": 28,
+      "n_seen": 1676,
+      "n_nonempty": 0,
+      "pct_nonempty": 0.0,
+      "type_counts": {
+        "EMPTY": 1676
+      },
+      "sample_values": [],
+      "n_distinct_nonempty": 0,
+      "distinct_values_if_low_cardinality": []
+    },
+    "29": {
+      "position": 29,
+      "n_seen": 3,
+      "n_nonempty": 0,
+      "pct_nonempty": 0.0,
+      "type_counts": {
+        "EMPTY": 3
+      },
+      "sample_values": [],
+      "n_distinct_nonempty": 0,
+      "distinct_values_if_low_cardinality": []
+    }
+  },
+  "binary_flag_candidates": [
+    {
+      "position": 27,
+      "distinct_values": [
+        "1"
+      ],
+      "pct_nonempty": 0.0004,
+      "type_counts": {
+        "EMPTY": 798668,
+        "INT": 3
+      }
+    }
+  ]
+}

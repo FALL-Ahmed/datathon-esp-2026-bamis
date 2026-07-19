@@ -1,0 +1,83 @@
+# =============================================================================
+# Hyperparametres par modele. modeling/train.py lit ce fichier -- aucun
+# hyperparametre ne doit etre code en dur dans train.py.
+# =============================================================================
+
+random_seed: 42
+
+class_imbalance_strategy: "class_weight"  # jamais de sur-echantillonnage aveugle (casserait la structure temporelle)
+
+baseline:
+  # score continu = amount_to_service_threshold_ratio, sert de reference
+  # minimale pour juger l'apport reel du ML
+  type: "rule_based"
+
+logistic_regression:
+  penalty: "l2"
+  C: 1.0
+  class_weight: "balanced"
+  max_iter: 1000
+  solver: "lbfgs"
+
+random_forest:
+  n_estimators: 400
+  max_depth: 12
+  min_samples_leaf: 20
+  class_weight: "balanced_subsample"
+  n_jobs: -1
+
+catboost:
+  iterations: 2000
+  depth: 8
+  learning_rate: 0.05
+  auto_class_weights: "Balanced"
+  eval_metric: "PRAUC"
+  early_stopping_rounds: 100
+
+lightgbm:
+  n_estimators: 2000
+  num_leaves: 63
+  learning_rate: 0.05
+  is_unbalance: true
+  metric: "average_precision"
+  early_stopping_rounds: 100
+
+xgboost:
+  n_estimators: 2000
+  max_depth: 8
+  learning_rate: 0.05
+  scale_pos_weight: "auto"  # calcule dynamiquement = nb_negatifs / nb_positifs sur le train
+  eval_metric: "aucpr"
+  early_stopping_rounds: 100
+
+calibration:
+  method: "isotonic"   # "platt" en alternative si peu de donnees de calibration disponibles
+
+selection_metric: "auc_pr"   # unique critere de selection du modele final -- jamais l'accuracy
+
+# =============================================================================
+# Strategie de combinaison de modeles -- voir ARCHITECTURE.md section 7 pour
+# la justification complete. Ordre de decision, du plus simple au plus risque :
+#   1. CatBoost seul = modele candidat par defaut (premiere soumission valide)
+#   2. + LightGBM comme second point de vue
+#   3. Moyenne ponderee simple des deux scores -- gardee seulement si elle
+#      bat le meilleur modele seul sur l'AUC-PR de validation
+#   4. Stacking a meta-modele -- desactive par defaut (stacking_enabled: false).
+#      Ne l'activer que si (a) CatBoost et LightGBM tournent deja proprement
+#      et livrent une soumission valide, ET (b) les predictions hors-fold
+#      (walk-forward, memes folds que validation/temporal_split.py) sont
+#      disponibles -- un stacking entraine sur des predictions in-sample
+#      cree une fuite invisible.
+# =============================================================================
+ensembling:
+  candidate_default_model: "catboost"
+  weighted_average:
+    enabled: true
+    weights:
+      catboost: 0.6
+      lightgbm: 0.4
+    keep_only_if_beats_best_single_model: true
+  stacking:
+    enabled: false   # a activer manuellement en connaissance de cause, cf. commentaire ci-dessus
+    meta_model: "logistic_regression"
+    requires_out_of_fold_predictions: true

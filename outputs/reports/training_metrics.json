@@ -1,0 +1,88 @@
+{
+  "cross_validation": {
+    "folds": [
+      {
+        "fold": 1,
+        "n_train": 45888,
+        "n_valid": 144832,
+        "baseline_auc_pr": 0.4221785869470877,
+        "logistic_regression_auc_pr": 0.030132413027492436,
+        "catboost_auc_pr": 0.47778678384060225
+      },
+      {
+        "fold": 2,
+        "n_train": 186008,
+        "n_valid": 427652,
+        "baseline_auc_pr": 0.47514358255732697,
+        "logistic_regression_auc_pr": 0.5175444402196867,
+        "catboost_auc_pr": 0.9265122947045924
+      },
+      {
+        "fold": 3,
+        "n_train": 607663,
+        "n_valid": 796093,
+        "baseline_auc_pr": 0.3645081075985444,
+        "logistic_regression_auc_pr": 0.38443759069670375,
+        "catboost_auc_pr": 0.8729847418913484
+      }
+    ],
+    "baseline_auc_pr_mean": 0.420610092367653,
+    "baseline_auc_pr_std": 0.04518035864748558,
+    "logistic_regression_auc_pr_mean": 0.31070481464796096,
+    "logistic_regression_auc_pr_std": 0.2057020705790969,
+    "catboost_auc_pr_mean": 0.7590946068121811,
+    "catboost_auc_pr_std": 0.20011141592672899
+  },
+  "holdout_evaluation": {
+    "auc_pr": 0.913863205837177,
+    "n_examples": 212222,
+    "n_positifs_reels": 554,
+    "par_seuil": [
+      {
+        "threshold": 0.1,
+        "precision": 0.18709895305639987,
+        "recall": 1.0,
+        "f1": 0.31522048364153626,
+        "n_alertes": 2961,
+        "n_vrais_positifs": 554,
+        "n_faux_positifs": 2407
+      },
+      {
+        "threshold": 0.3,
+        "precision": 0.23701159295835122,
+        "recall": 0.9963898916967509,
+        "f1": 0.3829344432882414,
+        "n_alertes": 2329,
+        "n_vrais_positifs": 552,
+        "n_faux_positifs": 1777
+      },
+      {
+        "threshold": 0.5,
+        "precision": 0.2613041408852927,
+        "recall": 0.9909747292418772,
+        "f1": 0.4135593220338983,
+        "n_alertes": 2101,
+        "n_vrais_positifs": 549,
+        "n_faux_positifs": 1552
+      },
+      {
+        "threshold": 0.7,
+        "precision": 0.293354943273906,
+        "recall": 0.98014440433213,
+        "f1": 0.4515592515592516,
+        "n_alertes": 1851,
+        "n_vrais_positifs": 543,
+        "n_faux_positifs": 1308
+      },
+      {
+        "threshold": 0.9,
+        "precision": 0.4870067372473532,
+        "recall": 0.9133574007220217,
+        "f1": 0.6352793471437539,
+        "n_alertes": 1039,
+        "n_vrais_positifs": 506,
+        "n_faux_positifs": 533
+      }
+    ]
+  }
+}

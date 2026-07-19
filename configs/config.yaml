@@ -1,0 +1,194 @@
+# =============================================================================
+# Configuration globale du pipeline BAMIS Fraud Detection
+# Toute valeur susceptible d'etre modifiee par le jury ou par l'equipe DOIT
+# vivre ici (ou dans configs/thresholds/seuils_services.csv) -- jamais en dur
+# dans le code Python.
+# =============================================================================
+
+paths:
+  raw_transactions: "data/raw/DATASET_ESP-2026.csv"
+  raw_test_transactions: null  # a renseigner des reception du fichier de test jury
+  schema_map: "configs/schema_map.yaml"
+  thresholds_file: "configs/thresholds/seuils_services.csv"
+  interim_dir: "data/interim"
+  processed_dir: "data/processed"
+  features_dir: "data/features"
+  graph_dir: "data/graph"
+  models_dir: "models"
+  outputs_dir: "outputs"
+
+random_seed: 42
+
+# ---------------------------------------------------------------------------
+# Fenetres temporelles utilisees par feature_engineering/velocity_features.py
+# et behavioral_features.py
+# ---------------------------------------------------------------------------
+velocity_windows:
+  - "1h"
+  - "24h"
+  - "7d"
+
+budget_periods:
+  - "day"
+  - "month"
+
+# ---------------------------------------------------------------------------
+# Volet B -- seuils_services.csv ne fournit qu'un seuil de cumul JOURNALIER,
+# pas de seuil mensuel officiel. HYPOTHESE DOCUMENTEE (pas une valeur
+# officielle) : seuil mensuel estime = seuil journalier x monthly_multiplier.
+# A remplacer immediatement si les organisateurs fournissent un vrai seuil
+# mensuel.
+# ---------------------------------------------------------------------------
+budget:
+  monthly_multiplier: 30
+  # multiplicateurs de seuil recommande selon l'action issue de la matrice de
+  # traitement (scoring/treatment_matrix.py) -- bonus volet B demande par le
+  # cahier des charges ("proposez un seuil plus haut ou plus bas selon la
+  # classe de risque du client, lien avec le volet C"). Hypotheses
+  # commerciales, pas des valeurs officielles BAMIS -- a valider/ajuster par
+  # la direction des risques ; documentees comme telles dans chaque
+  # justification generee (budget/threshold_recommender.py).
+  threshold_multipliers:
+    "Seuil majore": 1.5
+    "Seuil normal": 1.0
+    "Seuil reduit": 0.7
+    "Seuil minimal": 0.4
+    "Surveillance": 1.0
+    "Surveillance renforcee": 0.85
+    "Gel, investigation": 0.0
+
+# ---------------------------------------------------------------------------
+# Niveaux d'alerte de consommation de seuil (volet B)
+# ---------------------------------------------------------------------------
+budget_alert_levels: [0.5, 0.8, 0.95, 1.0]
+
+# ---------------------------------------------------------------------------
+# Definition jour / nuit pour F-01 (compte vole, souvent la nuit)
+# CORRIGE le 2026-07-19 apres verification sur la vraie distribution horaire
+# des 1,6M transactions : l'hypothese initiale (22h-6h) etait fausse -- 22h
+# et 23h sont en realite des heures d'activite NORMALE (5,4% et 4,4% du
+# volume total, proches de la moyenne horaire de 4,17%). Le vrai creux
+# d'activite se situe entre 0h et 7h (de 3,3% a 0h jusqu'a un minimum de
+# 0,45% a 5h, remontee des 7h a 1,4%). Fenetre recalibree sur la donnee
+# reelle plutot que sur une hypothese de bon sens non verifiee.
+# ---------------------------------------------------------------------------
+night_window:
+  start_hour: 0
+  end_hour: 7
+
+# ---------------------------------------------------------------------------
+# Volet C -- ponderation des scores (poids exacts du cahier des charges,
+# modifiables ici uniquement)
+# ---------------------------------------------------------------------------
+risk_score_weights:
+  comportement_anormal: 300
+  contournement: 250
+  role_reseau: 200
+  historique_alertes: 150
+  profil: 100
+
+value_score_weights:
+  volume: 300
+  rentabilite: 250
+  regularite: 200
+  diversite: 150
+  anciennete: 100
+
+value_segments:
+  Platine: {min: 800, max: 1000}
+  Or: {min: 600, max: 799}
+  Argent: {min: 400, max: 599}
+  Bronze: {min: 0, max: 399}
+
+risk_segments:
+  Faible: {min: 0, max: 249}
+  Modere: {min: 250, max: 499}
+  Eleve: {min: 500, max: 749}
+  Critique: {min: 750, max: 1000}
+
+# ---------------------------------------------------------------------------
+# Matrice de traitement (croisement valeur x risque -> action)
+# ---------------------------------------------------------------------------
+treatment_matrix:
+  Platine_or_Or:
+    Faible: "Seuil majore"
+    Modere: "Seuil normal"
+    Eleve: "Seuil reduit"
+    Critique: "Gel, investigation"
+  Argent:
+    Faible: "Seuil normal"
+    Modere: "Surveillance"
+    Eleve: "Surveillance renforcee"
+    Critique: "Gel, investigation"
+  Bronze:
+    Faible: "Seuil normal"
+    Modere: "Seuil reduit"
+    Eleve: "Seuil minimal"
+    Critique: "Gel, investigation"
+
+# ---------------------------------------------------------------------------
+# Validation temporelle (validation/temporal_split.py)
+# ---------------------------------------------------------------------------
+validation:
+  n_folds: 3
+  embargo: "7d"   # doit etre >= la plus longue fenetre de feature (velocity 7d)
+  # recalibre le 2026-07-19 : la valeur initiale (0.15) etait une convention
+  # generale non verifiee sur nos donnees. Teste : a 0.05 (5% du temps), le
+  # holdout contient deja 554 cas de pseudo-fraude (largement suffisant pour
+  # un AUC-PR stable, regle usuelle >100-300 cas) tout en ne sacrifiant que
+  # 13% des lignes au lieu de 35% -- preserve beaucoup plus de donnees
+  # d'entrainement, notamment les mois les plus recents et representatifs.
+  test_holdout_fraction_of_timeline: 0.05  # derniere tranche temporelle, jamais utilisee pour le tuning
+
+# ---------------------------------------------------------------------------
+# Regles metier niveau 1 (rules/business_rules.py) -- sert aussi a fabriquer
+# le pseudo-label d'entrainement puisqu'aucun label officiel ne sera fourni
+# (voir configs/schema_map.yaml -> decision_2026_07_19_pas_de_labels_a_attendre).
+# rafale_max_transactions_1h calibre sur la distribution reelle observee sur
+# le fichier complet (p99 = 86 operations/heure, max = 218) -- une valeur
+# trop basse (ex. 15) flaguerait ~26% des transactions au lieu de reperer
+# les vrais pics.
+# ---------------------------------------------------------------------------
+business_rules:
+  fractionnement_min_ops_24h: 3  # verifie le 2026-07-19 : parmi les transactions proches du seuil (80-100%), la mediane est de 2 operations/24h et 3 correspond au 75e percentile -- valeur initiale confirmee par la donnee, pas de changement
+  fractionnement_ratio_band: [0.8, 1.0]
+  rafale_max_transactions_1h: 80
+  nouveau_beneficiaire_ratio_max_habituel: 1.0  # verifie le 2026-07-19 : combine a "nouveau beneficiaire", donne 0.91% des transactions (sain, pas de cassure nette observee entre 1.0/1.5/2.0/3.0 -- valeur initiale conservee)
+  nuit_heure_debut: 0    # recalibre le 2026-07-19, voir night_window ci-dessus
+  nuit_heure_fin: 7
+  nuit_zscore_min: 3.0  # verifie le 2026-07-19 : 3.9% des transactions seul (coherent avec des montants a distribution a queue epaisse), 0.29% une fois combine a la contrainte de nuit -- valeur initiale conservee
+  # mule_ratio_band resserre le 2026-07-19 : teste sur le fichier complet,
+  # [0.8,1.2] seul matche 28% des transactions (la plupart des clients
+  # actifs finissent par depenser ~ce qu'ils recoivent, sur la duree -- pas
+  # selectif). [0.9,1.1] reduit ca a 17% seul / 3,7% combine au delai. Reste
+  # la moins selective des 7 regles (le vrai signal mule vient du module
+  # graphe a construire, graph/mule_detection.py -- cette regle R7 est une
+  # approximation niveau 1, documentee comme limite dans NOTE_METHODOLOGIQUE.md).
+  mule_ratio_band: [0.9, 1.1]
+  mule_delai_max_minutes: 30
+  pseudo_label_min_rules_triggered: 2
+
+# ---------------------------------------------------------------------------
+# Module graphe niveau 3 (graph/) -- volontairement une bande plus large que
+# business_rules.mule_ratio_band : ici on exige AUSSI la repetition
+# (n_quick_passthrough) pour compenser, alors que business_rules.py n'a que
+# le ratio+delai comme seul filtre. Voir graph/mule_detection.py.
+# ---------------------------------------------------------------------------
+graph:
+  mule_ratio_band: [0.7, 1.3]
+  mule_max_delay_minutes: 30
+  closed_circuit_max_delay: "7d"
+  fan_in_top_n: 200
+  fan_out_top_n: 200
+
+# ---------------------------------------------------------------------------
+# Poids d'evaluation officiels du jury (pour prioriser le temps de l'equipe,
+# cf. ARCHITECTURE.md section 11)
+# ---------------------------------------------------------------------------
+jury_evaluation_weights:
+  auc_pr: 0.30
+  detection_contournement_reseaux: 0.20
+  peu_de_faux_positifs: 0.15
+  gestion_budget_seuils: 0.15
+  qualite_classement_client: 0.15
+  documentation_reproductibilite: 0.05

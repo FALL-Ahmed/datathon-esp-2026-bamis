@@ -1,0 +1,31 @@
+21:26:21 [INFO] __main__: === Pipeline BAMIS Fraud Detection -- 10 etapes ===
+21:26:21 [INFO] __main__: DEBUT 01 - audit du schema brut
+21:29:22 [INFO] __main__: OK    01 - audit du schema brut (181.5s)
+21:29:22 [INFO] __main__: DEBUT 02 - ingestion + nettoyage
+21:30:50 [INFO] __main__: OK    02 - ingestion + nettoyage (87.9s)
+21:30:50 [INFO] __main__: DEBUT 03 - feature engineering (volet A)
+21:35:31 [INFO] __main__: OK    03 - feature engineering (volet A) (281.3s)
+21:35:31 [INFO] __main__: DEBUT 04 - graphe (bonus : mules, circuits fermes)
+21:36:31 [INFO] __main__: OK    04 - graphe (bonus : mules, circuits fermes) (59.8s)
+21:36:31 [INFO] __main__: SKIP  05 - entrainement du modele (--skip-training)
+21:36:31 [INFO] __main__: DEBUT 06 - scoring des transactions (volet A)
+21:37:41 [INFO] __main__: OK    06 - scoring des transactions (volet A) (69.6s)
+21:37:41 [INFO] __main__: DEBUT 07 - consommation de budget (volet B)
+21:37:59 [INFO] __main__: OK    07 - consommation de budget (volet B) (18.6s)
+21:37:59 [INFO] __main__: DEBUT 08 - classement des clients (volet C)
+21:38:59 [INFO] __main__: OK    08 - classement des clients (volet C) (59.7s)
+21:38:59 [INFO] __main__: DEBUT 09 - generation des 3 CSV de soumission
+21:39:20 [INFO] __main__: OK    09 - generation des 3 CSV de soumission (20.7s)
+21:39:20 [INFO] __main__: DEBUT bonus - seuils personnalises par risque
+21:39:24 [INFO] __main__: OK    bonus - seuils personnalises par risque (4.2s)
+21:39:24 [INFO] __main__: === Pipeline termine en 783.2s (13.1 min) ===
+21:39:24 [INFO] __main__:   01 - audit du schema brut                      181.5s
+21:39:24 [INFO] __main__:   02 - ingestion + nettoyage                      87.9s
+21:39:24 [INFO] __main__:   03 - feature engineering (volet A)             281.3s
+21:39:24 [INFO] __main__:   04 - graphe (bonus : mules, circuits fermes)    59.8s
+21:39:24 [INFO] __main__:   05 - entrainement du modele                      0.0s
+21:39:24 [INFO] __main__:   06 - scoring des transactions (volet A)         69.6s
+21:39:24 [INFO] __main__:   07 - consommation de budget (volet B)           18.6s
+21:39:24 [INFO] __main__:   08 - classement des clients (volet C)           59.7s
+21:39:24 [INFO] __main__:   09 - generation des 3 CSV de soumission         20.7s
+21:39:24 [INFO] __main__:   bonus - seuils personnalises par risque          4.2s
