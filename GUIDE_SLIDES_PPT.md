@@ -85,18 +85,35 @@ petites opérations plutôt qu'une grosse, pour rester sous les radars").
 - Un schéma simple à 3 boîtes, avec une flèche entre elles :
 
 ```
-[ Règles ]  →  [ Modèle IA ]  →  [ Graphe (réseau) ]
- rapide,        combine tous      détecte mules,
- explicable     les signaux       circuits, chaînes
+[ Règles ]         →   [ Modèle IA ]        →   [ Graphe (réseau) ]
+Repère les cas         Croise plusieurs          Suit l'argent entre
+évidents, tout de      signaux à la fois,        les comptes, trouve
+suite                  même invisibles à          les réseaux et
+                        l'œil nu                   les complices
 ```
 
-- Un seul chiffre gros, en bas : **AUC-PR : 0,91** (avec en petit texte :
-  "contre 0,42 sans intelligence artificielle")
+- Un seul chiffre gros, en bas, avec sa traduction en mots simples juste
+  à côté (pas juste le sigle technique) :
+
+```
+        0,91 / 1
+  Note de performance du modèle
+  (plus proche de 1 = meilleur)
+
+  Plus de 2x mieux qu'une méthode
+  simple, sans intelligence artificielle (0,42)
+```
+
+  Le sigle technique "AUC-PR" n'apparaît pas sur la slide — garde-le
+  pour l'oral, seulement si le jury demande le nom exact de la mesure.
 
 **Ce que tu dis :** les 3 niveaux existent parce qu'aucun seul niveau ne
 suffit — les règles simples ratent les schémas complexes, le modèle seul
 n'explique pas pourquoi, le graphe seul est lent sur une seule
-transaction.
+transaction. Si le jury demande le nom de la mesure : "c'est l'AUC-PR,
+la mesure recommandée par le cahier des charges pour ce genre de
+problème, parce que la fraude est rare — une mesure classique comme
+l'accuracy serait trompeuse."
 
 ---
 
