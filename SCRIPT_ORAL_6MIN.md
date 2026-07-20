@@ -11,18 +11,21 @@
 
 ---
 
-## Slide 1 — Titre (0:00 → 0:10)
+## Slide 1 — Titre (0:00 → 0:18)
 
-> "Bonjour, je m'appelle [ton prénom], je présente le projet de l'équipe
-> Nextdata : la détection de fraude sur le Mobile Money de BAMIS
-> Digital."
+> "Bonjour Mesdames et Messieurs, honorable jury. Merci de nous recevoir
+> pour ce Datathon ESP DATACLUB 2026, organisé par BAMIS Digital.
+>
+> Je m'appelle [ton prénom], et avec mon équipe, **Nextdata**, nous avons
+> construit une solution de détection de fraude sur le Mobile Money."
 
-*(10 secondes, pas plus — juste le temps que le jury lise les 3 chiffres
-en fond pendant que tu parles.)*
+*(18 secondes. Nextdata est le nom de l'équipe, pas du projet — le projet,
+c'est "détection de fraude sur le Mobile Money" pour BAMIS Digital. Ne
+mélange pas les deux à l'oral.)*
 
 ---
 
-## Slide 2 — Problématique (0:10 → 0:40)
+## Slide 2 — Problématique (0:18 → 0:48)
 
 > "Le vrai problème de la fraude, ce n'est pas le fraudeur qui dépasse
 > un seuil — c'est celui qui le contourne. Il fractionne ses montants en
@@ -38,7 +41,7 @@ en fond pendant que tu parles.)*
 
 ---
 
-## Slide 3 — Notre solution (0:40 → 1:25)
+## Slide 3 — Notre solution (0:48 → 1:33)
 
 > "Pour ça, on a construit 3 niveaux. Les règles repèrent les cas
 > évidents tout de suite. Le modèle IA croise plusieurs signaux à la
@@ -55,7 +58,7 @@ en fond pendant que tu parles.)*
 
 ---
 
-## Slide 4 — Démonstration en direct (1:25 → 4:25)
+## Slide 4 — Démonstration en direct (1:33 → 4:33)
 
 **Ce que tu dis en arrivant sur la slide (5 secondes), puis tu bascules
 sur le navigateur :**
@@ -92,7 +95,7 @@ pas.)*
 
 ---
 
-## Slide 5 — Résultats et impact (4:25 → 5:25)
+## Slide 5 — Résultats et impact (4:33 → 5:33)
 
 > "Concrètement, avec notre méthode : 319 transactions auraient été
 > bloquées, ce qui représente 64,5 millions d'ouguiyas protégés. Et notre
@@ -110,7 +113,7 @@ pas.)*
 
 ---
 
-## Slide 6 — Limites et prochaine étape (5:25 → 5:50)
+## Slide 6 — Limites et prochaine étape (5:33 → 5:50)
 
 > "On n'a pas eu accès aux vraies fraudes confirmées pour tester — on a
 > vérifié la cohérence entre nos règles et notre modèle à la place.
@@ -121,8 +124,9 @@ pas.)*
 > longues, et ajuster automatiquement le seuil de chaque client selon son
 > risque."
 
-*(25 secondes — dis la limite vite, insiste plus longtemps sur "avec vos
-vraies données..." qui est la phrase à retenir.)*
+*(17 secondes — un peu plus vite que les autres slides. Dis la limite
+vite, insiste plus longtemps sur "avec vos vraies données..." qui est la
+phrase à retenir.)*
 
 ---
 
