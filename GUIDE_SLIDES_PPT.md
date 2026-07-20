@@ -115,6 +115,13 @@ la mesure recommandée par le cahier des charges pour ce genre de
 problème, parce que la fraude est rare — une mesure classique comme
 l'accuracy serait trompeuse."
 
+**Si le jury demande sur quoi porte le 0,91 précisément** (pas pour la
+slide, garde ça pour la réponse orale) : "Ce chiffre est mesuré sur des
+transactions que le modèle n'a jamais vues pendant son apprentissage —
+les plus récentes du fichier, mises de côté exprès avant d'entraîner.
+Ça évite de se féliciter d'un modèle qui aurait juste appris ses propres
+exemples par cœur."
+
 ---
 
 ## Slide 4 — Démonstration en direct (1:15–4:15)
