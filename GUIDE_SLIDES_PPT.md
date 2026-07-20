@@ -25,7 +25,7 @@
 - En bas : les 3 chiffres clés côte à côte, gros
 
 ```
-   0,91           319              22 637
+   0,91           319              24 637
   AUC-PR    transactions       circuits fermés
              bloquées            détectés
 ```
@@ -33,6 +33,14 @@
 **Ce que tu dis (5-10 secondes) :** ton nom, le nom de l'équipe, une
 phrase d'accroche du type "notre solution détecte la fraude sans bloquer
 les clients honnêtes."
+
+**Attention avec le chiffre "24 637" :** ne dis jamais "24 637 fraudes".
+Ce sont des circuits fermés **détectés** (le motif A→B→A existe), pas
+des fraudes **confirmées** — une partie sont sûrement des annulations
+techniques normales, pas de la triche. Le vrai message, c'est "notre
+détection de circuits fonctionne et trouve de vrais motifs", pas "on a
+trouvé 24 637 fraudeurs". Si le jury demande une précision là-dessus, dis
+ça clairement — c'est un point déjà assumé dans `GUIDE_SOUTENANCE.md`.
 
 ---
 
@@ -124,6 +132,12 @@ direct dans le navigateur.
 et impact". L'exemple du marchand est le même que celui du cas concret
 "compte agent" dans `GUIDE_SOUTENANCE.md` — dis-le avec assurance, c'est
 un vrai cas vérifié dans les données, pas un exemple inventé.
+
+**Même remarque que sur la slide 1 :** dis "24 637 circuits fermés
+**détectés**", jamais "24 637 fraudes". Si tu veux être encore plus
+précis à l'oral : "notre module a trouvé 24 637 motifs de circuit fermé —
+certains sont sûrement des annulations normales, mais ça prouve que la
+détection fonctionne vraiment, pas juste en théorie."
 
 ---
 
