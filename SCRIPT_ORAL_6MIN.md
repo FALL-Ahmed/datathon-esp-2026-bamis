@@ -66,32 +66,41 @@ sur le navigateur :**
 > "Je vous montre ça en direct, sur le vrai dashboard, avec les vraies
 > données."
 
-**Puis, une fois sur le dashboard (le minutage ci-dessous est celui déjà
-préparé dans `GUIDE_SOUTENANCE.md`) :**
+**Puis, une fois sur le dashboard — où cliquer + quoi dire, dans
+l'ordre :**
 
-1. *(30s)* Ouvre la file d'alertes. Dis : "Voici une transaction à score
-   élevé."
-2. *(30s)* Montre son score de fraude. Dis : "Le modèle donne un score
-   sur 100, avec les raisons précises — ici, [cite 2-3 des facteurs
-   affichés]."
-3. *(45s)* Ouvre la fiche du client (`TEL039808`). Dis : "Ce client a un
-   score de risque de 820 sur 1000. Il a reçu de l'argent de 13
-   expéditeurs différents et en a envoyé à 18 — c'est le profil d'un
-   compte collecteur."
-4. *(30s)* Montre sa consommation de seuil. Dis : "On voit aussi sa
-   consommation de budget, tous canaux confondus — appli, agent, USSD,
-   tout est compté ensemble, pour qu'il ne puisse pas contourner en
-   changeant de canal."
-5. *(30s)* Ouvre la vue réseau (`TEL093693`). Dis : "Et voici le moment
-   le plus important : notre module graphe. Ce compte a renvoyé l'argent
-   reçu en moins de 30 minutes, 259 fois sur 273 transactions — c'est une
-   vraie mule, pas juste une règle qui se déclenche."
-6. *(15s)* Dis : "En fonction de ces deux scores, le système recommande
-   une action — ici, [dis l'action affichée : surveillance / gel / seuil
-   réduit]."
+1. *(30s)* **Onglet "File d'alertes"** (menu de gauche) → clique
+   n'importe quelle ligne à score élevé (pas besoin d'un des 2 cas
+   précis ici).
+   > "Voici une transaction à score élevé."
+2. *(30s)* La fenêtre qui s'ouvre montre le score + les 5 facteurs.
+   > "Le modèle donne un score sur 100, avec les raisons précises — ici,
+   > [cite 2-3 des facteurs affichés]."
+3. *(45s)* **Onglet "Clients à risque"** → tape `TEL039808` dans la
+   barre de recherche → clique la ligne pour ouvrir sa fiche.
+   > "Ce client a un score de risque de 820 sur 1000. Il a reçu de
+   > l'argent de 13 expéditeurs différents et en a envoyé à 18 — c'est
+   > le profil d'un compte collecteur."
+4. *(30s)* Toujours sur cette fiche, ou **onglet "Gestion budget"**
+   (cherche le même client) → montre sa consommation de seuil.
+   > "On voit aussi sa consommation de budget, tous canaux confondus —
+   > appli, agent, USSD, tout est compté ensemble, pour qu'il ne puisse
+   > pas contourner en changeant de canal."
+5. *(30s)* **Onglet "Vue d'ensemble" → sous-onglet "Analyse fraude"** →
+   descends jusqu'à la carte "Réseau de comptes suspects" → tape
+   `TEL093693` dans le champ de recherche du graphe → clique "Chercher".
+   > "Et voici le moment le plus important : notre module graphe. Ce
+   > compte a renvoyé l'argent reçu en moins de 30 minutes, 259 fois sur
+   > 273 transactions — c'est une vraie mule, pas juste une règle qui se
+   > déclenche."
+6. *(15s)* Retourne sur la fiche client de `TEL039808` (ou l'alerte du
+   début) → montre la ligne "Décision recommandée".
+   > "En fonction de ces deux scores, le système recommande une action
+   > — ici, [dis l'action affichée : surveillance / gel / seuil réduit]."
 
 *(3 minutes exactement — c'est le cœur de la présentation, ne dépasse
-pas.)*
+pas. Entraîne-toi à faire ces clics une fois avant, pour ne jamais
+chercher en direct devant le jury.)*
 
 ---
 
