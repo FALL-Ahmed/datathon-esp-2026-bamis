@@ -49,12 +49,19 @@ trouvé 24 637 fraudeurs". Si le jury demande une précision là-dessus, dis
 **Ce qu'il y a dessus :**
 - Un titre court : "Le fraudeur ne dépasse jamais le seuil — il le
   contourne"
-- 3 exemples visuels côte à côte (icônes + mot-clé) :
-  - Fractionner (couper un gros montant en petits)
-  - Compte mule (l'argent passe et ressort)
-  - Trop d'opérations (rester sous le radar)
+- 3 exemples visuels côte à côte (icône + mot-clé + une image en 3-4
+  mots max, reprise du langage même du cahier des charges de BAMIS —
+  plus parlant qu'une définition technique) :
+  - **Fractionner** — "couper un gâteau en petites parts"
+  - **Compte mule** — "une boîte aux lettres : ça entre, ça ressort"
+  - **Trop d'opérations** — "vider une piscine à la petite cuillère"
 - Une phrase en bas, en évidence : "Le vrai défi : ne pas accuser à tort
   un marchand ou un salarié."
+
+**Pourquoi ces images précises :** ce sont les mots que BAMIS utilise
+lui-même dans son cahier des charges pour expliquer chaque schéma. Les
+reprendre montre que tu as vraiment lu et compris leur document, et ça
+reste simple pour n'importe qui dans le jury, même sans bagage technique.
 
 **Ce que tu dis :** reprends le texte déjà préparé dans
 `GUIDE_SOUTENANCE.md`, section "Problème métier".
