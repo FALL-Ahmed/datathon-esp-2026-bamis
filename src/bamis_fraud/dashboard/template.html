@@ -466,34 +466,70 @@
   .network-search-msg.is-info { color: var(--text-muted); }
 
   /* ---------------- tendance mensuelle ---------------- */
-  .trend-panel { margin-bottom: 14px; }
-  .trend-panel:last-child { margin-bottom: 0; }
-  .trend-panel-head {
-    display: flex; justify-content: space-between; align-items: baseline;
-    font-family: var(--font-mono); font-size: 0.68rem; color: var(--text-secondary);
-    margin-bottom: 4px;
+  .trend-filters { display: flex; gap: 6px; align-items: center; margin-bottom: 12px; flex-wrap: wrap; }
+  .trend-filters button {
+    background: var(--surface-1); border: 1px solid var(--border-strong);
+    padding: 5px 12px; cursor: pointer; border-radius: var(--radius);
+    font-family: var(--font-mono); font-size: 0.68rem; font-weight: 700;
+    color: var(--text-secondary); transition: color 0.15s, border-color 0.15s, background 0.15s;
   }
-  .trend-panel-head .dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 6px; }
-  .trend-plot { position: relative; padding-left: 40px; }
-  .trend-axis-y {
-    position: absolute; left: 0; top: 0; bottom: 0; width: 36px;
+  .trend-filters button:hover { color: var(--text-primary); border-color: var(--accent); }
+  .trend-filters button.active { color: #fff; background: var(--accent); border-color: var(--accent); }
+  .trend-filter-sep { width: 1px; height: 18px; background: var(--border-strong); margin: 0 4px; }
+  .trend-date-input {
+    background: var(--surface-1); border: 1px solid var(--border-strong); border-radius: var(--radius);
+    padding: 4px 8px; font-family: var(--font-mono); font-size: 0.68rem; color: var(--text-primary);
+    color-scheme: dark;
+  }
+  :root[data-theme="light"] .trend-date-input { color-scheme: light; }
+  .trend-date-input:focus { outline: 1px solid var(--accent); outline-offset: -1px; }
+  .trend-filter-arrow { font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-muted); }
+  .trend-filter-reset {
+    background: none; border: none; cursor: pointer;
+    font-family: var(--font-mono); font-size: 0.66rem; color: var(--text-muted);
+    text-decoration: underline; padding: 4px 2px;
+  }
+  .trend-filter-reset:hover { color: var(--accent); }
+
+  .trend-legend { display: flex; gap: 16px; margin-bottom: 8px; font-family: var(--font-mono); font-size: 0.68rem; color: var(--text-secondary); }
+  .trend-legend span.trend-legend-item { display: inline-flex; align-items: center; gap: 6px; }
+  .trend-legend .line { width: 16px; height: 0; display: inline-block; border-top-width: 2px; border-top-style: solid; }
+  .trend-legend .line.is-solid { border-top-color: var(--accent); }
+  .trend-legend .line.is-dashed { border-top-color: var(--critical); border-top-style: dashed; }
+
+  .trend-plot { position: relative; padding: 0 46px; }
+  .trend-axis-y-left, .trend-axis-y-right {
+    position: absolute; top: 0; bottom: 20px; width: 40px;
     display: flex; flex-direction: column; justify-content: space-between;
-    font-family: var(--font-mono); font-size: 0.6rem; color: var(--text-muted);
-    text-align: right; padding: 1px 0;
+    font-family: var(--font-mono); font-size: 0.6rem; padding: 1px 0;
   }
-  .trend-svg { width: 100%; height: 88px; display: block; }
+  .trend-axis-y-left { left: 0; text-align: right; color: var(--accent); }
+  .trend-axis-y-right { right: 0; text-align: left; color: var(--critical); }
+  .trend-svg { width: 100%; height: 190px; display: block; overflow: visible; }
   .trend-area { fill: var(--accent-soft); }
   .trend-line-volume { fill: none; stroke: var(--accent); stroke-width: 2; }
-  .trend-line-fraud { fill: none; stroke: var(--critical); stroke-width: 1.5; }
-  .trend-axis-x {
-    position: relative; height: 16px; margin-top: 2px; padding-left: 40px;
-  }
+  .trend-line-fraud { fill: none; stroke: var(--critical); stroke-width: 1.5; stroke-dasharray: 4 3; }
+  .trend-gridline { stroke: var(--gridline); stroke-width: 1; }
+  .trend-axis-x { position: relative; height: 16px; margin-top: 4px; padding: 0 46px; }
   .trend-axis-x span {
     position: absolute; transform: translateX(-50%);
     font-family: var(--font-mono); font-size: 0.6rem; color: var(--text-muted);
     white-space: nowrap;
   }
-  .trend-gridline { stroke: var(--gridline); stroke-width: 1; }
+  .trend-hover-rect { fill: transparent; pointer-events: all; cursor: crosshair; }
+  .trend-crosshair { stroke: var(--text-muted); stroke-width: 1; stroke-dasharray: 3 3; pointer-events: none; opacity: 0; }
+  .trend-hover-dot { pointer-events: none; opacity: 0; }
+  .trend-hover-dot circle { fill: var(--surface-0); stroke-width: 2; }
+  .trend-tooltip {
+    position: absolute; pointer-events: none; opacity: 0; transition: opacity 0.08s;
+    background: var(--surface-2); border: 1px solid var(--border-strong); border-radius: var(--radius);
+    padding: 8px 11px; font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-primary);
+    white-space: nowrap; z-index: 5; box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+  }
+  .trend-tooltip .tt-mois { font-weight: 700; color: var(--text-primary); margin-bottom: 4px; display: block; }
+  .trend-tooltip .tt-row { display: flex; justify-content: space-between; gap: 14px; }
+  .trend-tooltip .tt-row .tt-vol { color: var(--accent); }
+  .trend-tooltip .tt-row .tt-fraud { color: var(--critical); }
 
   /* ---------------- mini-liste top risque ---------------- */
   .mini-list { display: flex; flex-direction: column; }
@@ -741,7 +777,21 @@
       <div class="cmd-row">
         <div class="card">
           <h3>Évolution mensuelle</h3>
-          <div class="card-sub">Volume de transactions et taux de fraude, juin 2022 → juillet 2026</div>
+          <div class="card-sub">Volume de transactions et taux de fraude</div>
+          <div class="trend-filters" id="trend-filters">
+            <button data-period="12" type="button">12 mois</button>
+            <button data-period="24" type="button">24 mois</button>
+            <button data-period="all" class="active" type="button">Tout</button>
+            <span class="trend-filter-sep"></span>
+            <input type="month" class="trend-date-input" id="trend-date-from" aria-label="Du mois">
+            <span class="trend-filter-arrow">→</span>
+            <input type="month" class="trend-date-input" id="trend-date-to" aria-label="Au mois">
+            <button class="trend-filter-reset" id="trend-date-reset" type="button" hidden>Réinitialiser</button>
+          </div>
+          <div class="trend-legend">
+            <span class="trend-legend-item"><span class="line is-solid"></span> Volume</span>
+            <span class="trend-legend-item"><span class="line is-dashed"></span> Taux de fraude</span>
+          </div>
           <div id="trend-chart"></div>
         </div>
         <div class="card">
@@ -1274,78 +1324,171 @@ function toggleNetworkExpand() {
 }
 
 /* ============================ TENDANCE MENSUELLE ============================ */
-// Deux panneaux empiles (volume, taux de fraude) plutot qu'un seul graphique
-// a deux echelles Y superposees -- un graphique a double axe Y est trompeur
-// (les deux courbes semblent se croiser/comparer alors que leurs unites
-// n'ont rien a voir : transactions vs pourcentage). Chaque panneau a son
-// propre axe Y explicite ; l'axe X (mois) n'est affiche qu'une fois, sous
-// le panneau du bas, aligne en % exact sur les points des deux panneaux.
+// Un seul graphique a deux echelles Y (volume a gauche en orange, taux de
+// fraude a droite en rouge, chacune etiquetee dans sa propre couleur pour
+// rester lisible malgre le partage du meme plan) -- retour utilisateur :
+// la version a deux panneaux empiles cassait la comparaison visuelle des
+// deux courbes. Interactif (survol = curseur + infobulle + point sur
+// chaque courbe) et filtrable (12 mois / 24 mois / tout, ~50 mois de
+// donnees etant trop dense a lire d'un coup).
 const MOIS_FR = ["janv", "févr", "mars", "avr", "mai", "juin", "juil", "août", "sept", "oct", "nov", "déc"];
 function formatMoisCourt(moisStr) {
   const [y, m] = moisStr.split("-");
   return `${MOIS_FR[parseInt(m, 10) - 1]} ${y.slice(2)}`;
 }
 
-function renderTrendPanel(svgId, t, valueFn, maxValue, formatValue, lineClass, areaClass) {
-  const W = 600, H = 100, padL = 4, padR = 4, padT = 6, padB = 4;
-  const x = i => padL + (i / Math.max(1, t.length - 1)) * (W - padL - padR);
-  const y = v => H - padB - (v / maxValue) * (H - padT - padB);
-
-  const line = t.map((d, i) => `${i === 0 ? "M" : "L"}${x(i)},${y(valueFn(d))}`).join(" ");
-  const areaPath = areaClass
-    ? `M${x(0)},${H - padB} ` + t.map((d, i) => `L${x(i)},${y(valueFn(d))}`).join(" ") + ` L${x(t.length - 1)},${H - padB} Z`
-    : "";
-  const midY = y(maxValue / 2);
-
-  document.getElementById(svgId).innerHTML = `
-    <svg class="trend-svg" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">
-      <line class="trend-gridline" x1="${padL}" y1="${y(0)}" x2="${W - padR}" y2="${y(0)}" vector-effect="non-scaling-stroke"/>
-      <line class="trend-gridline" x1="${padL}" y1="${midY}" x2="${W - padR}" y2="${midY}" stroke-dasharray="2 3" vector-effect="non-scaling-stroke"/>
-      ${areaClass ? `<path class="${areaClass}" d="${areaPath}"/>` : ""}
-      <path class="${lineClass}" d="${line}" vector-effect="non-scaling-stroke"/>
-    </svg>`;
-
-  return x;
-}
+let TREND_PERIOD = "all";
+let TREND_RANGE = null; // {from: "2023-01", to: "2023-06"} quand un intervalle personnalise est actif
 
 function renderTrendChart() {
-  const t = DATA.trends;
+  const all = DATA.trends;
   const root = document.getElementById("trend-chart");
-  if (!t.length) { root.innerHTML = `<div class="empty-state">Pas assez de données.</div>`; return; }
+  if (!all.length) { root.innerHTML = `<div class="empty-state">Pas assez de données.</div>`; return; }
 
+  let t;
+  if (TREND_RANGE) {
+    t = all.filter(d => d.mois >= TREND_RANGE.from && d.mois <= TREND_RANGE.to);
+    if (!t.length) t = all;
+  } else {
+    t = TREND_PERIOD === "all" ? all : all.slice(-parseInt(TREND_PERIOD, 10));
+  }
+
+  const W = 600, H = 190, padL = 4, padR = 4, padT = 10, padB = 4;
   const maxN = Math.max(...t.map(d => d.n));
   const maxRate = Math.max(0.001, ...t.map(d => d.fraud_rate));
+  const x = i => padL + (i / Math.max(1, t.length - 1)) * (W - padL - padR);
+  const yVol = n => H - padB - (n / maxN) * (H - padT - padB);
+  const yRate = r => H - padB - (r / maxRate) * (H - padT - padB);
+
+  const areaPath = `M${x(0)},${H-padB} ` + t.map((d,i) => `L${x(i)},${yVol(d.n)}`).join(" ") + ` L${x(t.length-1)},${H-padB} Z`;
+  const volLine = t.map((d,i) => `${i===0?'M':'L'}${x(i)},${yVol(d.n)}`).join(" ");
+  const fraudLine = t.map((d,i) => `${i===0?'M':'L'}${x(i)},${yRate(d.fraud_rate)}`).join(" ");
 
   root.innerHTML = `
-    <div class="trend-panel">
-      <div class="trend-panel-head"><span><span class="dot" style="background:var(--accent)"></span>Volume de transactions</span><span>par mois</span></div>
-      <div class="trend-plot">
-        <div class="trend-axis-y"><span>${fmtNum(maxN)}</span><span>${fmtNum(Math.round(maxN/2))}</span><span>0</span></div>
-        <div id="trend-svg-volume"></div>
-      </div>
-    </div>
-    <div class="trend-panel">
-      <div class="trend-panel-head"><span><span class="dot" style="background:var(--critical)"></span>Taux de fraude</span><span>par mois</span></div>
-      <div class="trend-plot">
-        <div class="trend-axis-y"><span>${(maxRate*100).toFixed(1)}%</span><span>${(maxRate*50).toFixed(1)}%</span><span>0%</span></div>
-        <div id="trend-svg-fraud"></div>
-      </div>
+    <div class="trend-plot">
+      <div class="trend-axis-y-left"><span>${fmtNum(maxN)}</span><span>${fmtNum(Math.round(maxN/2))}</span><span>0</span></div>
+      <div class="trend-axis-y-right"><span>${(maxRate*100).toFixed(1)}%</span><span>${(maxRate*50).toFixed(1)}%</span><span>0%</span></div>
+      <svg class="trend-svg" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" id="trend-svg">
+        <line class="trend-gridline" x1="${padL}" y1="${yVol(0)}" x2="${W-padR}" y2="${yVol(0)}" vector-effect="non-scaling-stroke"/>
+        <line class="trend-gridline" x1="${padL}" y1="${yVol(maxN/2)}" x2="${W-padR}" y2="${yVol(maxN/2)}" stroke-dasharray="2 3" vector-effect="non-scaling-stroke"/>
+        <path class="trend-area" d="${areaPath}"/>
+        <path class="trend-line-volume" d="${volLine}" vector-effect="non-scaling-stroke"/>
+        <path class="trend-line-fraud" d="${fraudLine}" vector-effect="non-scaling-stroke"/>
+        <line class="trend-crosshair" id="trend-crosshair" x1="0" y1="0" x2="0" y2="${H}"/>
+        <g class="trend-hover-dot" id="trend-dot-vol"><circle r="4" fill="var(--surface-0)" stroke="var(--accent)"/></g>
+        <g class="trend-hover-dot" id="trend-dot-fraud"><circle r="4" fill="var(--surface-0)" stroke="var(--critical)"/></g>
+        <rect class="trend-hover-rect" x="0" y="0" width="${W}" height="${H}" id="trend-hover-rect"/>
+      </svg>
+      <div class="trend-tooltip" id="trend-tooltip"></div>
     </div>
     <div class="trend-axis-x" id="trend-axis-x"></div>`;
 
-  renderTrendPanel("trend-svg-volume", t, d => d.n, maxN, fmtNum, "trend-line-volume", "trend-area");
-  renderTrendPanel("trend-svg-fraud", t, d => d.fraud_rate, maxRate, r => (r*100).toFixed(2)+"%", "trend-line-fraud", null);
-
-  // etiquettes d'axe X : un sous-ensemble espace regulierement (sinon ~50
-  // mois se chevauchent), positionne en % exact pour rester aligne sur les
-  // points des deux panneaux au-dessus.
+  // etiquettes d'axe X : sous-ensemble espace regulierement (sinon ~50 mois
+  // se chevauchent), positionne en % exact pour rester aligne sur la courbe.
   const stride = Math.max(1, Math.ceil(t.length / 8));
   const ticks = t.map((d, i) => ({ i, mois: d.mois })).filter(d => d.i % stride === 0 || d.i === t.length - 1);
   document.getElementById("trend-axis-x").innerHTML = ticks.map(tk => {
     const pct = (tk.i / Math.max(1, t.length - 1)) * 100;
     return `<span style="left:${pct.toFixed(2)}%">${formatMoisCourt(tk.mois)}</span>`;
   }).join("");
+
+  // survol : curseur vertical + point sur chaque courbe + infobulle
+  const svg = document.getElementById("trend-svg");
+  const hoverRect = document.getElementById("trend-hover-rect");
+  const crosshair = document.getElementById("trend-crosshair");
+  const dotVol = document.getElementById("trend-dot-vol");
+  const dotFraud = document.getElementById("trend-dot-fraud");
+  const tooltip = document.getElementById("trend-tooltip");
+  const plotEl = svg.parentElement;
+
+  function showAt(clientX) {
+    const svgRect = svg.getBoundingClientRect();
+    const relX = (clientX - svgRect.left) / svgRect.width;
+    const svgX = relX * W;
+    let idx = Math.round(((svgX - padL) / (W - padL - padR)) * (t.length - 1));
+    idx = Math.max(0, Math.min(t.length - 1, idx));
+    const d = t[idx];
+    const px = x(idx);
+
+    crosshair.setAttribute("x1", px); crosshair.setAttribute("x2", px);
+    crosshair.style.opacity = 1;
+    dotVol.setAttribute("transform", `translate(${px},${yVol(d.n)})`);
+    dotVol.style.opacity = 1;
+    dotFraud.setAttribute("transform", `translate(${px},${yRate(d.fraud_rate)})`);
+    dotFraud.style.opacity = 1;
+
+    tooltip.innerHTML = `<span class="tt-mois">${formatMoisCourt(d.mois)}</span>
+      <div class="tt-row"><span class="tt-vol">Volume</span><span>${fmtNum(d.n)}</span></div>
+      <div class="tt-row"><span class="tt-fraud">Taux fraude</span><span>${(d.fraud_rate*100).toFixed(2)}%</span></div>`;
+
+    const plotRect = plotEl.getBoundingClientRect();
+    const ttWidth = 130;
+    let leftPx = (svgRect.left - plotRect.left) + (px / W) * svgRect.width;
+    leftPx = Math.min(Math.max(leftPx, ttWidth/2 + 4), plotRect.width - ttWidth/2 - 4);
+    tooltip.style.left = leftPx + "px";
+    tooltip.style.top = "4px";
+    tooltip.style.transform = "translateX(-50%)";
+    tooltip.style.opacity = 1;
+  }
+
+  hoverRect.addEventListener("mousemove", (e) => showAt(e.clientX));
+  hoverRect.addEventListener("mouseleave", () => {
+    crosshair.style.opacity = 0;
+    dotVol.style.opacity = 0;
+    dotFraud.style.opacity = 0;
+    tooltip.style.opacity = 0;
+  });
 }
+
+document.querySelectorAll("#trend-filters button[data-period]").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll("#trend-filters button[data-period]").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    TREND_PERIOD = btn.dataset.period;
+    TREND_RANGE = null;
+    document.getElementById("trend-date-from").value = "";
+    document.getElementById("trend-date-to").value = "";
+    document.getElementById("trend-date-reset").hidden = true;
+    renderTrendChart();
+  });
+});
+
+// filtre par intervalle personnalise (deux selecteurs de mois) -- borne aux
+// mois reellement presents dans les donnees, applique des que les deux
+// bornes sont renseignees et coherentes (from <= to).
+(function initTrendDateRange() {
+  const fromInput = document.getElementById("trend-date-from");
+  const toInput = document.getElementById("trend-date-to");
+  const resetBtn = document.getElementById("trend-date-reset");
+  if (!DATA.trends.length) return;
+
+  const minMois = DATA.trends[0].mois;
+  const maxMois = DATA.trends[DATA.trends.length - 1].mois;
+  fromInput.min = toInput.min = minMois;
+  fromInput.max = toInput.max = maxMois;
+
+  function applyRange() {
+    const from = fromInput.value, to = toInput.value;
+    if (!from || !to || from > to) return;
+    TREND_RANGE = { from, to };
+    TREND_PERIOD = "all";
+    document.querySelectorAll("#trend-filters button[data-period]").forEach(b => b.classList.remove("active"));
+    resetBtn.hidden = false;
+    renderTrendChart();
+  }
+
+  fromInput.addEventListener("change", applyRange);
+  toInput.addEventListener("change", applyRange);
+  resetBtn.addEventListener("click", () => {
+    fromInput.value = "";
+    toInput.value = "";
+    resetBtn.hidden = true;
+    TREND_RANGE = null;
+    TREND_PERIOD = "all";
+    document.querySelectorAll("#trend-filters button[data-period]").forEach(b => b.classList.toggle("active", b.dataset.period === "all"));
+    renderTrendChart();
+  });
+})();
 
 /* ============================ TOP CLIENTS A RISQUE (mini) ============================ */
 function renderTopRiskMini() {

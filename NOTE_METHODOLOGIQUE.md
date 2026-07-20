@@ -140,10 +140,13 @@ des valeurs fausses à l'échelle complète (un cas vérifié montrait "544
 expéditeurs" pour un client qui en a réellement 13, confirmé deux fois par
 comptage direct) — cause exacte non identifiée dans le temps disponible.
 Colonnes retirées du score client, remplacées par un comptage direct
-revérifié. **Limite assumée :** ces colonnes faisaient aussi partie des 24
-variables d'entrée du modèle CatBoost déjà entraîné — non réentraîné avec
-la version corrigée faute de temps, impact non mesuré mais probablement
-limité (2 variables sur 24).
+revérifié. Ces deux colonnes faisaient aussi partie des variables d'entrée
+du modèle CatBoost déjà entraîné : plutôt que de garder un modèle entraîné
+sur une donnée connue pour être fausse à l'échelle, elles ont été retirées
+de `FEATURE_COLUMNS` (24 → 22 variables) et **le modèle a été réentraîné**
+le même jour. Résultat mesuré : AUC-PR holdout quasiment inchangé (0,9139
+→ 0,9130, écart de 0,0009, dans le bruit), confirmant que ces deux
+variables ne portaient pas de signal réel utile au modèle.
 
 **Autres limites :** "Profil"/"Ancienneté" se limitent à la durée de la
 relation (aucune donnée KYC) ; "Rôle dans un réseau" n'inclut pas
@@ -164,7 +167,7 @@ Trois modèles comparés sur le même pseudo-label :
 
 La régression logistique fait moins bien que la baseline elle-même :
 confirme que le problème n'est pas linéairement séparable dans l'espace
-des 24 variables retenues.
+des 22 variables retenues.
 
 **Pourquoi CatBoost :** pour des données tabulaires, le gradient boosting
 est l'état de l'art. CatBoost a été préféré pour (1) son *ordered
@@ -231,8 +234,9 @@ label.
 - **Aucune vérité terrain de fraude** : le 0,91 mesure la capacité à
   retrouver notre propre pseudo-label, pas la vraie fraude gardée par le
   jury — contrainte du problème, assumée.
-- **Bug dans 2 des 24 variables du modèle** (section 4) — corrigé pour les
-  scores client, modèle non réentraîné faute de temps, impact non mesuré.
+- ~~Bug dans 2 des 24 variables du modèle~~ **corrigé et réentraîné le
+  2026-07-20** (section 4) : variables retirées (24 → 22), AUC-PR
+  holdout quasi inchangé (0,9139 → 0,9130) — plus une limite ouverte.
 - **Colonnes à confiance faible** (`CHANNEL_TYPE`, `SETTLEMENT_STATUS`...,
   38-51 % de vides irréguliers) volontairement non utilisées — conséquence
   directe : C-08 (changement de canal) n'est pas détecté.
@@ -253,7 +257,6 @@ label.
 - Reconnecter le module graphe complet (vrai score mule, appartenance à un
   circuit fermé) dans `scoring/customer_scoring.py`, qui utilise
   aujourd'hui une approximation.
-- Réentraîner le modèle après correction des 2 variables buguées.
 - Détecter les chaînes de rebond (C-05) et le fractionnement multi-comptes
   (C-10) avec un budget de calcul plus large.
 - Seuils adaptatifs par classe de risque : partiellement fait (bonus

@@ -71,8 +71,17 @@ FEATURE_COLUMNS = [
     "montant_cumule_recu_past",
     "ratio_montant_recu_envoye_past",
     "delai_depuis_derniere_reception_minutes",
-    "nb_expediteurs_distincts_past",
-    "nb_destinataires_distincts_past",
+    # "nb_expediteurs_distincts_past" et "nb_destinataires_distincts_past"
+    # RETIREES le 2026-07-20 : bug confirme dans network_features.py (merge_asof
+    # + cumsum de flags) donnant des valeurs fausses a l'echelle complete du
+    # fichier (ex. "544 expediteurs" pour un client qui en a reellement 13,
+    # verifie deux fois par comptage direct) -- correct sur un sous-ensemble
+    # isole de 71 lignes, faux au-dela, cause exacte non identifiee. Plutot
+    # que d'entrainer le modele sur une donnee connue pour etre fausse a
+    # l'echelle, on la retire (24 -> 22 features) et on reentraine. Le score
+    # client (volet C) utilise deja un comptage direct verifie a la place
+    # (customer_scoring.py, nb_expediteurs_distincts_recus /
+    # nb_destinataires_distincts_envoyes) depuis la meme date.
     "is_external_gimtel",
 ]
 

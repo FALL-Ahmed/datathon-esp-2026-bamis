@@ -1,63 +1,55 @@
 # Guide de soutenance — BAMIS Fraud Detection
 
-> Document de préparation interne à l'équipe pour la présentation orale
-> (10-15 min + démonstration). Contient le scénario de démo, les cas
-> concrets à montrer, et les réponses préparées aux questions probables du
-> jury. **Ce n'est pas un livrable du cahier des charges** — extrait de
-> `ARCHITECTURE.md` le 2026-07-19 pour garder ce dernier focalisé sur
-> l'architecture technique. Voir `NOTE_METHODOLOGIQUE.md` pour le rapport
-> officiel (démarche, variables, résultats) et `ARCHITECTURE.md` pour le
-> détail technique du pipeline.
+> Document de préparation interne à l'équipe pour la présentation orale.
+> Contient le scénario de démo, les cas concrets à montrer, et les
+> réponses préparées aux questions probables du jury. **Ce n'est pas un
+> livrable du cahier des charges** — extrait de `ARCHITECTURE.md` le
+> 2026-07-19 pour garder ce dernier focalisé sur l'architecture technique.
+> Voir `NOTE_METHODOLOGIQUE.md` pour le rapport officiel (démarche,
+> variables, résultats) et `ARCHITECTURE.md` pour le détail technique du
+> pipeline.
+>
+> **Format officiel (protocole d'évaluation BAMIS, reçu le 2026-07-20) :
+> 6 minutes de présentation + démonstration, puis 4 minutes de questions
+> du jury. Une seule personne du groupe présente.** L'agenda ci-dessous
+> remplace une version antérieure pensée pour 10-15 minutes — trop long
+> pour le format réel.
 
 ## Écrans et scénario
 
-**Structure recommandée (10 à 15 minutes), alignée sur celle suggérée par
-le cahier des charges :**
+**Agenda chronométré pour 6 minutes, une seule personne au clavier et à
+la parole :**
 
-1. **Problème métier** (1 min) — le fraudeur ne dépasse jamais le seuil,
-   il le contourne ; le vrai défi est de ne pas signaler à tort marchands,
-   salariés, locataires.
-2. **Difficultés rencontrées** (1 min) — mentionner explicitement l'audit
-   de schéma (section 0 de `ARCHITECTURE.md`) : c'est une preuve concrète
-   de rigueur méthodologique que peu d'équipes concurrentes auront
-   probablement remarquée si elles n'ont pas vérifié l'alignement des
-   colonnes.
-3. **Architecture de la solution** (1-2 min) — montrer le schéma du
-   pipeline, insister sur "seuils jamais en dur" et "split temporel".
-4. **Variables importantes** (1-2 min) — 3-4 features clés avec leur
-   pouvoir discriminant (ex. importance SHAP), notamment ratio au seuil et
-   écart à l'historique client.
-5. **Modèle de fraude** (1 min) — ordre de modèles testés, AUC-PR obtenu,
-   comparaison à la baseline règle simple (démontrer l'apport réel du ML).
-6. **Détection des contournements** (2 min) — LE moment différenciant :
-   montrer un compte mule détecté ou une chaîne de rebond sur le dashboard
-   graphe, avec l'explication en langage simple.
-7. **Gestion des seuils** (1 min) — montrer un client qui a changé de canal
-   et dont le cumul continue correctement (preuve C-08).
-8. **Classement des clients** (1-2 min) — une fiche client avec ses 2
-   scores et ses 5 facteurs explicatifs.
-9. **Démonstration live** (3-4 min) — scénario concret ci-dessous.
-10. **Résultats et impact pour BAMIS** (1 min) — chiffrer : "X fraudes
-    détectées sur Y transactions, Z faux positifs, gain de temps estimé
-    pour les équipes de conformité".
+| Temps | Étape | Contenu |
+|---|---|---|
+| 0:00–0:30 | Problème métier | Le fraudeur ne dépasse jamais le seuil, il le contourne ; le vrai défi est de ne pas signaler à tort marchands, salariés, locataires. |
+| 0:30–1:15 | Architecture + résultat clé | 3 niveaux (règles → modèle → graphe), seuils jamais en dur, split temporel. Un seul chiffre à retenir : **AUC-PR 0,91** (vs 0,42 en baseline). |
+| 1:15–4:15 | Démonstration live | Le cœur des 6 minutes — scénario détaillé ci-dessous, dashboard à l'écran du début à la fin. |
+| 4:15–5:15 | Résultats et impact | 319 transactions bloquées, ~64,5 M MRU protégés, module graphe (24 637 circuits fermés) — chiffrer l'impact concret pour BAMIS. |
+| 5:15–6:00 | Limites assumées + clôture | Une phrase honnête (pas de vérité terrain disponible, corrigée par la cohérence croisée règles/scores) plutôt que de survendre. |
 
-**Scénario de démonstration concret (tel que suggéré par le cahier des
-charges) :**
-1. Ouvrir la file d'alertes, sélectionner une transaction à score élevé.
-2. Montrer son score de fraude et ses raisons (5 facteurs).
-3. Ouvrir la fiche du client associé : profil, score de risque, score de
+**Ce qui a été volontairement retiré de l'agenda long** (toujours
+disponible pour la session de questions, 4 minutes après) : le détail de
+l'audit de schéma, le détail des variables, la comparaison des 3 modèles
+ML, le détail des règles une par une — à sortir uniquement si le jury
+pose la question correspondante (voir Q&A ci-dessous).
+
+**Scénario de démonstration concret (3 minutes, le cœur de la présentation) :**
+1. *(30s)* Ouvrir la file d'alertes, sélectionner une transaction à score élevé.
+2. *(30s)* Montrer son score de fraude et ses raisons (5 facteurs).
+3. *(45s)* Ouvrir la fiche du client associé : profil, score de risque, score de
    valeur, action recommandée.
-4. Montrer sa consommation de seuil (proche de 100 %, tous canaux
+4. *(30s)* Montrer sa consommation de seuil (proche de 100 %, tous canaux
    confondus).
-5. Ouvrir la vue réseau : montrer les comptes liés (mule ou chaîne) si le
-   cas s'y prête.
-6. Conclure sur l'action recommandée par la matrice de traitement
+5. *(30s)* Ouvrir la vue réseau : montrer les comptes liés (mule ou chaîne) —
+   LE moment différenciant (20 % du barème).
+6. *(15s)* Conclure sur l'action recommandée par la matrice de traitement
    (surveillance, gel, seuil réduit...).
 
 **Préparer 2-3 cas concrets à l'avance** (pas de recherche live à l'aveugle
-devant le jury) : un vrai positif clair, un cas limite bien expliqué (pour
-montrer la maîtrise des faux positifs), et un cas réseau (mule/chaîne) si
-le module graphe est prêt.
+devant le jury, on n'a pas le temps de chercher en 6 minutes) : un vrai
+positif clair, et un cas réseau (mule/chaîne) — voir la liste ci-dessous,
+les deux premiers cas suffisent largement pour le temps disponible.
 
 **Cas concrets déjà repérés dans les vraies données, à retenir pour la
 démonstration** (mis à jour au fil de l'avancement) :
@@ -76,12 +68,12 @@ démonstration** (mis à jour au fil de l'avancement) :
   faux à l'échelle du fichier complet, cause exacte non identifiée). Ces
   deux colonnes ont été retirées de `scoring/customer_scoring.py` et
   remplacées par un comptage direct sur les transactions brutes, revérifié
-  manuellement. **Limite assumée à signaler si le jury demande le détail
-  des features du modèle ML** : ces deux colonnes faisaient partie des 24
-  features d'entrée de CatBoost (`feature_engineering/feature_store.py`) —
-  le modèle n'a pas été réentraîné avec la version corrigée faute de temps
-  (2 features bruitées sur 24, impact probablement limité mais non
-  quantifié).
+  manuellement. **Si le jury demande le détail des features du modèle
+  ML** : ces deux colonnes faisaient partie des 24 features d'entrée de
+  CatBoost (`feature_engineering/feature_store.py`) — retirées (24 → 22)
+  et le **modèle réentraîné le 2026-07-20**, résultat mesuré : AUC-PR
+  holdout quasi inchangé (0,9139 → 0,9130). Plus une limite ouverte, une
+  bonne histoire de méthode à raconter si la question arrive.
 - **Compte agent (téléphone non encore identifié nommément) — jusqu'à 3400
   opérations en 24h, actif ainsi depuis 2022.** Cas limite idéal pour
   démontrer la maîtrise des faux positifs : un modèle naïf le signalerait
@@ -280,7 +272,7 @@ bruité), et une comparaison chiffrée réelle plutôt qu'une préférence.
 *Point de vigilance, à ne pas dire :* ne pas mentionner "CatBoost gère
 nativement les catégories" comme argument — c'est vrai en général pour
 CatBoost, mais **pas utilisé dans notre implémentation précise** : le
-modèle ne reçoit que 24 colonnes numériques déjà calculées
+modèle ne reçoit que 22 colonnes numériques déjà calculées
 (`FEATURE_COLUMNS` dans `feature_store.py`), aucune colonne catégorielle
 brute (comme `SERVICE_CODE`) ne lui est passée directement — son effet
 passe uniquement par le ratio au seuil du service, déjà calculé en amont.
