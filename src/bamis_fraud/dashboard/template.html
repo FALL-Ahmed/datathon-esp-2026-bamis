@@ -654,6 +654,54 @@
   .empty-state { text-align: center; padding: 44px; color: var(--text-muted); font-size: 0.88rem; font-family: var(--font-mono); }
   footer { text-align: center; padding: 22px; color: var(--text-muted); font-size: 0.72rem; font-family: var(--font-mono); border-top: 1px solid var(--border); }
   footer strong { color: var(--text-secondary); }
+  .table-wrap { overflow-x: auto; }
+
+  /* ---------------- mobile : la sidebar fixe de 246px casse tout sur
+     petit ecran (prend plus de la moitie de la largeur) -- ajoute le
+     2026-07-20 suite a une verification directe, aucune regle mobile
+     n'existait avant pour l'app-shell lui-meme (seulement pour quelques
+     grilles internes). Place en fin de feuille de style pour etre sur
+     de gagner sur les regles non-conditionnelles ci-dessus (meme
+     specificite, l'ordre dans le fichier decide). ---------------- */
+  @media (max-width: 760px) {
+    html, body { overflow-x: hidden; }
+    .app-shell { flex-direction: column; min-height: auto; width: 100%; max-width: 100vw; }
+    .sidebar {
+      width: 100%; max-width: 100vw; min-width: 0; height: auto; position: static;
+      border-right: none; border-bottom: 1px solid var(--border-strong);
+    }
+    .sidebar-brand { padding: 14px 16px; }
+    .brand-mark { width: 36px; height: 36px; }
+    .brand-text h1 { font-size: 0.76rem; }
+    .side-nav {
+      flex-direction: row; overflow-x: auto; padding: 8px 10px; gap: 4px;
+      -webkit-overflow-scrolling: touch;
+      width: 100%; max-width: 100%; min-width: 0; flex: none;
+    }
+    .side-nav button { flex-shrink: 0; border-left: none; border-bottom: 2px solid transparent; padding: 8px 10px; }
+    .side-nav button.active { border-left-color: transparent; border-bottom-color: var(--accent); }
+    .side-nav button .nav-label { white-space: nowrap; }
+    .sidebar-foot { display: none; }
+    .main-col { width: 100%; max-width: 100vw; min-width: 0; }
+
+    .topbar { flex-wrap: wrap; padding: 10px 14px; gap: 10px; }
+    .status-strip { flex-wrap: wrap; gap: 10px; margin-right: 0; width: 100%; order: 2; }
+
+    main { padding: 16px 14px 40px; max-width: 100vw; }
+    .kpi-grid { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); }
+    .kpi-card.hero { grid-column: 1 / -1; }
+    .cmd-row { grid-template-columns: 1fr; }
+    .grid-2 { grid-template-columns: 1fr; }
+    /* .card se laissait pousser plus large que l'ecran par le tableau
+       qu'il contient (min-content d'un <table> non contraint) --
+       force le contexte de formatage a se contraindre, ce qui laisse
+       .table-wrap (overflow-x:auto) faire le scroll interne a sa place */
+    .card, .subview, .view { max-width: 100%; min-width: 0; }
+    .table-wrap { max-width: 100%; }
+
+    .notif-panel { width: calc(100vw - 28px); right: -14px; }
+    .modal { width: calc(100vw - 24px); }
+  }
 </style>
 </head>
 <body>
