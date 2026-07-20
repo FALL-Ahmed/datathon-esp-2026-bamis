@@ -278,6 +278,24 @@ brute (comme `SERVICE_CODE`) ne lui est passée directement — son effet
 passe uniquement par le ratio au seuil du service, déjà calculé en amont.
 Si le jury demande à voir le code, cet argument ne tiendrait pas.
 
+**Réponse préparée à la question "C'est quoi exactement votre modèle de
+référence basique à 0,42 ?"** (à ne pas confondre avec "le score des 7
+règles combinées" — ce n'est pas ça) :
+
+*Version courte (30 secondes) :*
+> "C'est le signal le plus évident tout seul : le montant de la
+> transaction divisé par le seuil du service, utilisé tel quel comme
+> score de fraude, sans aucun apprentissage. Il rate tout ce qui ne se
+> voit pas dans ce seul chiffre — le fractionnement, l'horaire, le
+> comportement inhabituel du client. C'est exactement pour ça qu'il ne
+> fait que 0,42 : notre pseudo-label dépend de plusieurs signaux à la
+> fois, pas d'un seul."
+
+*Pourquoi cette réponse est solide :* elle montre que la comparaison est
+honnête — le point de départ est le signal le plus simple possible, pas
+une version affaiblie exprès de nos propres règles, ce qui rendrait la
+comparaison trompeuse.
+
 **Réponse préparée à la question "Sur quoi vous êtes-vous basés pour dire
 que 3 règles sur 7 déclenchées, c'est le seuil de blocage ?"** :
 

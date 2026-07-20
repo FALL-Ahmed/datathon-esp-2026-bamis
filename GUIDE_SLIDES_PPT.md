@@ -130,6 +130,10 @@ exemples par cœur."
 contenu à lire :
 - Titre, gros et centré : "Démonstration en direct"
 - En dessous, petit : "sur le dashboard réel, données réelles"
+- Encore plus petit, en bas de la slide : le lien du dashboard —
+  **datathon.loop-ia.com** — pour que le jury puisse le noter et le
+  revisiter lui-même après, même si tu ne cliques pas dessus pendant
+  ta présentation (tu bascules sur ton propre navigateur pour la démo).
 - Une icône simple (écran d'ordinateur, ou loupe) — rien d'autre. C'est
   une pause visuelle avant de basculer sur le navigateur, pas une slide
   à expliquer.
