@@ -313,7 +313,13 @@ def build_dashboard_data() -> dict:
     seed_nodes = connected_nodes
     pos = nx.spring_layout(graph_g, seed=42, k=1.8 / max(1, len(connected_nodes)) ** 0.5)
 
-    mule_score_by_id = mule_scores.set_index("phone")["mule_score"].to_dict()
+    # mule_score est un score composite sans echelle intuitive (0 a 5+) --
+    # inutilisable pour expliquer un compte au jury. On expose a la place les
+    # chiffres bruts, comprehensibles sans jargon : nombre de transactions,
+    # part renvoyee quasi immediatement, delai median de renvoi.
+    mule_stats_by_id = mule_scores.set_index("phone")[
+        ["n_transactions", "n_quick_passthrough", "passthrough_rate", "median_delay_minutes_all"]
+    ].to_dict("index")
     network_graph = {
         "nodes": [
             {
@@ -322,8 +328,11 @@ def build_dashboard_data() -> dict:
                 "y": round(float(pos[node_id][1]), 4),
                 "is_mule": node_id in top_mules,
                 "in_circuit": node_id in circuit_accounts,
-                "mule_score": round(float(mule_score_by_id.get(node_id, 0.0)), 3),
                 "degree": int(graph_g.degree(node_id)),
+                "n_transactions": int(mule_stats_by_id.get(node_id, {}).get("n_transactions", 0)),
+                "n_quick_passthrough": int(mule_stats_by_id.get(node_id, {}).get("n_quick_passthrough", 0)),
+                "passthrough_rate_pct": round(float(mule_stats_by_id.get(node_id, {}).get("passthrough_rate", 0.0)) * 100, 1),
+                "median_delay_minutes": round(float(mule_stats_by_id.get(node_id, {}).get("median_delay_minutes_all", 0.0)), 1),
             }
             for node_id in seed_nodes
         ],

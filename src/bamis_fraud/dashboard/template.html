@@ -1259,12 +1259,14 @@ function renderNetworkGraph() {
 
   const neighborsById = {};
   g.nodes.forEach(n => { neighborsById[n.id] = new Set(); });
+  const txCountByPair = {};
   g.edges.forEach(e => {
     if (neighborsById[e.source]) neighborsById[e.source].add(e.target);
     if (neighborsById[e.target]) neighborsById[e.target].add(e.source);
+    txCountByPair[[e.source, e.target].sort().join("|")] = e.n;
   });
 
-  NET_DATA = { nodes: g.nodes, posById, neighborsById };
+  NET_DATA = { nodes: g.nodes, nodeById, posById, neighborsById, txCountByPair };
 
   const edgesSvg = g.edges.map(e => {
     const s = posById[e.source], t = posById[e.target];
@@ -1286,8 +1288,13 @@ function renderNetworkGraph() {
     const r = 1.1 + Math.min(2.2, n.degree * 0.25);
     const label = (n.degree >= 2)
       ? `<text class="net-label" x="${(p.x + r + 0.6).toFixed(2)}" y="${(p.y + 0.7).toFixed(2)}">${n.id}</text>` : "";
+    const degreeTxt = `relié à ${n.degree} compte${n.degree > 1 ? "s" : ""} dans cet échantillon`;
+    const muleTxt = n.is_mule
+      ? ` · compte MULE : renvoie l'argent reçu en ${n.median_delay_minutes} min (délai médian) dans ${n.passthrough_rate_pct}% des cas (${n.n_quick_passthrough} fois sur ${n.n_transactions} transactions)`
+      : "";
+    const circuitTxt = n.in_circuit ? " · fait partie d'un circuit fermé (l'argent part puis revient sur ce compte)" : "";
     return `<g class="net-node" data-id="${n.id}">` +
-      `<circle class="${cls}" cx="${p.x}" cy="${p.y}" r="${r}"><title>${n.id} · degré ${n.degree}${n.is_mule ? ' · mule score ' + n.mule_score : ''}${n.in_circuit ? ' · circuit fermé' : ''}</title></circle>` +
+      `<circle class="${cls}" cx="${p.x}" cy="${p.y}" r="${r}"><title>${n.id} · ${degreeTxt}${muleTxt}${circuitTxt}</title></circle>` +
       `${label}</g>`;
   }).join("");
 
@@ -1340,8 +1347,21 @@ function searchNetworkNode(rawQuery) {
   });
 
   const n = neighbors.size;
-  msgEl.textContent = `Compte ${hit.id} — ${n} connexion${n > 1 ? "s" : ""} directe${n > 1 ? "s" : ""} dans cet échantillon` +
-    `${hit.is_mule ? " · profil mule" : ""}${hit.in_circuit ? " · dans un circuit fermé" : ""}.`;
+  const neighborList = [...neighbors];
+  const namesTxt = neighborList.length && neighborList.length <= 3
+    ? " (" + neighborList.map(nb => {
+        const cnt = NET_DATA.txCountByPair[[hit.id, nb].sort().join("|")];
+        return `${nb}${cnt ? " · " + cnt + " transaction" + (cnt > 1 ? "s" : "") : ""}`;
+      }).join(", ") + ")"
+    : "";
+  let msg = `Compte ${hit.id} — relié à ${n} compte${n > 1 ? "s" : ""} dans cet échantillon${namesTxt}.`;
+  if (hit.is_mule) {
+    msg += ` Profil MULE : renvoie l'argent reçu en ${hit.median_delay_minutes} min (délai médian) dans ${hit.passthrough_rate_pct}% des cas (${hit.n_quick_passthrough} fois sur ${hit.n_transactions} transactions) — c'est ce comportement, pas juste une règle, qui le rend suspect.`;
+  }
+  if (hit.in_circuit) {
+    msg += " Fait partie d'un circuit fermé : l'argent part de ce compte puis y revient après un ou plusieurs transferts.";
+  }
+  msgEl.textContent = msg;
   msgEl.className = "network-search-msg is-found";
   resetBtn.hidden = false;
 }
