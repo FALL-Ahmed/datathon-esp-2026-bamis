@@ -49,22 +49,30 @@ trouvé 24 637 fraudeurs". Si le jury demande une précision là-dessus, dis
 **Ce qu'il y a dessus :**
 - Un titre court : "Le fraudeur ne dépasse jamais le seuil — il le
   contourne"
-- 3 exemples visuels côte à côte (icône + mot-clé + une image en 3-4
-  mots max, reprise du langage même du cahier des charges de BAMIS —
-  plus parlant qu'une définition technique) :
-  - **Fractionner** — "couper un gâteau en petites parts"
-  - **Compte mule** — "une boîte aux lettres : ça entre, ça ressort"
-  - **Trop d'opérations** — "vider une piscine à la petite cuillère"
+- 3 exemples visuels côte à côte — juste un mot-clé + une icône, pas de
+  phrase écrite :
+  - **Fractionner** — icône : un gâteau coupé en parts (ou des flèches
+    qui séparent un gros bloc en petits blocs)
+  - **Compte mule** — icône : une boîte aux lettres, ou une flèche qui
+    entre et ressort tout de suite
+  - **Trop d'opérations** — icône : une petite cuillère à côté d'une
+    piscine, ou plusieurs petites flèches qui s'accumulent
 - Une phrase en bas, en évidence : "Le vrai défi : ne pas accuser à tort
   un marchand ou un salarié."
 
-**Pourquoi ces images précises :** ce sont les mots que BAMIS utilise
-lui-même dans son cahier des charges pour expliquer chaque schéma. Les
-reprendre montre que tu as vraiment lu et compris leur document, et ça
-reste simple pour n'importe qui dans le jury, même sans bagage technique.
+**Pourquoi une icône plutôt qu'une phrase :** la règle du guide, c'est
+peu de texte. L'image remplace la phrase — tu gardes l'analogie
+("couper un gâteau", "boîte aux lettres", "vider une piscine à la petite
+cuillère") pour la dire à l'oral, pas pour l'écrire. Ce sont les mots que
+BAMIS utilise lui-même dans son cahier des charges — les dire à voix
+haute montre que tu as vraiment lu et compris leur document, et l'icône
+seule reste compréhensible même sans bagage technique.
 
 **Ce que tu dis :** reprends le texte déjà préparé dans
-`GUIDE_SOUTENANCE.md`, section "Problème métier".
+`GUIDE_SOUTENANCE.md`, section "Problème métier" — et en montrant chaque
+icône, dis son analogie à voix haute ("comme couper un gâteau en petites
+parts", "une boîte aux lettres : ça entre, ça ressort", "vider une
+piscine à la petite cuillère").
 
 ---
 
