@@ -126,17 +126,32 @@ exemples par cœur."
 
 ## Slide 4 — Démonstration en direct (1:15–4:15)
 
-**Ce n'est pas une vraie slide de contenu** — juste un titre de
-transition ("Démonstration") puis tu bascules sur le dashboard en
-direct dans le navigateur.
+**Ce qu'il y a dessus :** une slide de transition, très simple, pas de
+contenu à lire :
+- Titre, gros et centré : "Démonstration en direct"
+- En dessous, petit : "sur le dashboard réel, données réelles"
+- Une icône simple (écran d'ordinateur, ou loupe) — rien d'autre. C'est
+  une pause visuelle avant de basculer sur le navigateur, pas une slide
+  à expliquer.
+
+**Les 2 cas concrets à utiliser** (préparés à l'avance, ne cherche jamais
+en direct devant le jury) :
+
+1. **`TEL039808`** — score de risque 820/1000 (Critique). A reçu de
+   l'argent de 13 expéditeurs différents, en a envoyé à 18 — profil
+   "collecteur". Bon cas pour montrer la fiche client complète (score +
+   les 5 facteurs expliqués).
+2. **`TEL093693`** — profil mule. 259 de ses 273 transactions sont des
+   "reçu puis renvoyé en moins de 30 minutes". Bon cas pour la vue
+   réseau (le moment le plus différenciant, 20% du barème).
 
 **Avant la soutenance :**
 - Ouvre le dashboard à l'avance dans un onglet, connexion déjà testée.
-- Prépare 2 cas concrets en favoris ou notés sur un papier (voir
-  `GUIDE_SOUTENANCE.md`, section "Cas concrets") — ne cherche jamais en
-  direct devant le jury.
+- Note ces 2 numéros de compte sur un papier à côté de toi, ou en
+  favoris navigateur — pas besoin de les chercher, ils sont écrits
+  ci-dessus.
 - Suis exactement les 6 étapes chronométrées déjà écrites dans
-  `GUIDE_SOUTENANCE.md`.
+  `GUIDE_SOUTENANCE.md`, section "Scénario de démonstration concret".
 
 **Plan B, si internet coupe ou le dashboard charge mal :**
 - Prends des **captures d'écran** des 5-6 étapes de la démo (les mêmes
