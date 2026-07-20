@@ -55,15 +55,17 @@ trouvé 24 637 fraudeurs". Si le jury demande une précision là-dessus, dis
     qui séparent un gros bloc en petits blocs)
   - **Compte mule** — icône : une boîte aux lettres, ou une flèche qui
     entre et ressort tout de suite
-  - **Trop d'opérations** — icône : une petite cuillère à côté d'une
-    piscine, ou plusieurs petites flèches qui s'accumulent
+  - **Trop d'opérations** — icône : plein de petites pièces qui tombent
+    rapidement dans une tirelire (montre "beaucoup de petites actions au
+    lieu d'une grosse")
 - Une phrase en bas, en évidence : "Le vrai défi : ne pas accuser à tort
   un marchand ou un salarié."
 
 **Pourquoi une icône plutôt qu'une phrase :** la règle du guide, c'est
 peu de texte. L'image remplace la phrase — tu gardes l'analogie
-("couper un gâteau", "boîte aux lettres", "vider une piscine à la petite
-cuillère") pour la dire à l'oral, pas pour l'écrire. Ce sont les mots que
+("couper un gâteau", "boîte aux lettres", "des dizaines de petites
+opérations plutôt qu'une grosse") pour la dire à l'oral, pas pour
+l'écrire. Ce sont les mots que
 BAMIS utilise lui-même dans son cahier des charges — les dire à voix
 haute montre que tu as vraiment lu et compris leur document, et l'icône
 seule reste compréhensible même sans bagage technique.
@@ -71,8 +73,8 @@ seule reste compréhensible même sans bagage technique.
 **Ce que tu dis :** reprends le texte déjà préparé dans
 `GUIDE_SOUTENANCE.md`, section "Problème métier" — et en montrant chaque
 icône, dis son analogie à voix haute ("comme couper un gâteau en petites
-parts", "une boîte aux lettres : ça entre, ça ressort", "vider une
-piscine à la petite cuillère").
+parts", "une boîte aux lettres : ça entre, ça ressort", "plein de
+petites opérations plutôt qu'une grosse, pour rester sous les radars").
 
 ---
 
